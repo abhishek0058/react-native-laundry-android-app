@@ -1,21 +1,49 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Root } from "native-base";
+import { Font, AppLoading } from "expo";
+
+import { createStackNavigator } from 'react-navigation';
+
+import Login from './components/Login'
+import Signup from './components/Singup'
+import Home from './components/Home'
 
 export default class App extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = { loading: true };
+  }
+
+  async componentWillMount() {
+    await Font.loadAsync({
+      Roboto: require("native-base/Fonts/Roboto.ttf"),
+      Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf")
+    });
+    this.setState({ loading: false });
+  }
+
   render() {
+    if (this.state.loading) {
+      return (
+        <Root>
+          <AppLoading />
+        </Root>
+      );
+    }
     return (
-      <View style={styles.container}>
-        <Text>Open up App.js to start working on your app!</Text>
-      </View>
+      <Root>
+        <RootStack />
+      </Root>
     );
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+const RootStack = createStackNavigator({
+  login: Login,
+  signup: Signup,
+  home: Home
+}, {
+  initialRouteName: 'login'
 });
+
