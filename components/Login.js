@@ -6,7 +6,7 @@ import BaseURL from './BaseURL';
 export default class Login extends Component {
     
     static navigationOptions = {
-        header: null
+        title: 'Login'
     }
 
     state = {
@@ -19,7 +19,7 @@ export default class Login extends Component {
             const user = await AsyncStorage.getItem('user');
             if(user) {
                 console.log('ALready Login', user)
-                this.props.navigation.navigate('home')
+                this.props.navigation.replace('home')
             }
         } catch (e) {
             console.log(e)
@@ -33,7 +33,7 @@ export default class Login extends Component {
     async login() {
         const { username, password } = this.state;
         try {
-            const response = await fetch(`${BaseURL}/admin/login`, {
+            const response = await fetch(`${BaseURL}/user/login`, {
                 method: 'POST',
                 mode: 'cors',
                 headers: {
@@ -57,14 +57,6 @@ export default class Login extends Component {
     render() {
         return (
             <Container>
-                <Header>
-                    <Left/>
-                    <Body>
-                        <Title>LogIn</Title>
-                    </Body>
-                    <Right>
-                    </Right>
-                </Header>
                 <Content padder>
                     <Form style={{
                         marginVertical: 20
