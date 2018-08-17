@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { AsyncStorage } from 'react-native';
-import { Container, Header, Content, Form, Item, Input, Label, Button, Text, Body, Title, Left, Right, Icon } from 'native-base';
+import { Container, Spinner, Content, Form, Item, Input, Label, Button, Text, Icon } from 'native-base';
 import BaseURL from './BaseURL';
 
 export default class Login extends Component {
@@ -12,25 +12,27 @@ export default class Login extends Component {
     state = {
         username: '',
         password: '',
+        loading: false
     }
 
     checkPreviousLogin = async () =>  {
         try {
             const user = await AsyncStorage.getItem('user');
             if(user) {
-                console.log('ALready Login', user)
                 this.props.navigation.replace('home')
             }
         } catch (e) {
-            console.log(e)
+            console.log('Login', e)
         }
     }
 
-    componentWillMount() {
+    async componentWillMount() {
+        //await AsyncStorage.removeItem('user')
         this.checkPreviousLogin()
     }
 
     async login() {
+        this.setState({ loading: true })
         const { username, password } = this.state;
         try {
             const response = await fetch(`${BaseURL}/user/login`, {
@@ -43,9 +45,12 @@ export default class Login extends Component {
                 body: JSON.stringify({ username, password })
             });
             const result = await response.json()
-            console.log('Login result', result)
+            this.setState({ loading: false })
+            //console.log('Login result', JSON.stringify(result[0]))
+
             if(result.length) {
                 await AsyncStorage.setItem('user', JSON.stringify(result[0]));
+                this.props.navigation.replace('home')
             } else {
                 alert('Invalid Username/Password');
             }
@@ -53,6 +58,25 @@ export default class Login extends Component {
             console.log('Check LOGIN ERROR', e)
         }
     }
+
+    loginButton = () => {
+        if(this.state.loading) {
+            return (
+                <Spinner style={{ marginVertical: 50, alignSelf: 'center' }} />
+            )
+        } else {
+            return (
+                <Button iconLeft success
+                    onPress={() => this.login()}  
+                    style={{ marginVertical: 50, alignSelf: 'center' }}
+                >
+                    <Icon name='key' />
+                    <Text>Login</Text>
+                </Button>
+            );
+        }
+    } 
+
 
     render() {
         return (
@@ -71,13 +95,7 @@ export default class Login extends Component {
                         </Item>
                     </Form>
 
-                    <Button iconLeft success
-                        onPress={() => this.login()}  
-                        style={{ marginVertical: 50, alignSelf: 'center' }}
-                    >
-                        <Icon name='key' />
-                        <Text>Login</Text>
-                    </Button>
+                    {this.loginButton()}
 
                     <Text style={{ alignSelf: 'center', fontSize: 20 }}>OR</Text>
 

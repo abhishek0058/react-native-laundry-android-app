@@ -1,7 +1,7 @@
 import React from 'react';
 import { Root } from "native-base";
-import { Font, AppLoading } from "expo";
-
+import Expo, { Font, AppLoading } from "expo";
+import { SafeAreaView, Platform } from 'react-native'
 import { createStackNavigator } from 'react-navigation';
 
 import Login from './components/Login'
@@ -26,15 +26,20 @@ export default class App extends React.Component {
   render() {
     if (this.state.loading) {
       return (
-        <Root>
-          <AppLoading />
-        </Root>
+        <SafeAreaView style={{ flex: 1 }}>
+          <Root>
+            <AppLoading />
+          </Root>
+        </SafeAreaView>
+        
       );
     }
     return (
-      <Root>
-        <RootStack />
-      </Root>
+      <SafeAreaView style={{ flex: 1, paddingTop: Platform.OS === 'ios' ? 0 : Expo.Constants.statusBarHeight }}>
+        <Root>
+          <RootStack />
+        </Root>
+      </SafeAreaView>
     );
   }
 }
