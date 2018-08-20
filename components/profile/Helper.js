@@ -62,7 +62,10 @@ export default class Helper extends Component {
 
     changeProfileField = async () => {
         try {
-            this.setState({ edit: false, loading: true })
+            this.setState({
+                edit: false,
+                loading: true
+            })
             const response = await fetch(`${BaseURL}/user/edit`, {
                 method: 'POST',
                 mode: 'cors',
@@ -73,23 +76,31 @@ export default class Helper extends Component {
                 body: `{ "${(this.state.label).toLowerCase()}": "${this.state.value}", "id": ${this.state.userid} }`
             });
             const result = await response.json();
-            if(result.result) { 
-                this.props.refreshAsncStorage(JSON.parse(`{ "${(this.state.label).toLowerCase()}": "${this.state.value}"}`));
-                this.setState({ loading: false, startingValue: this.state.value, changedOnce: true });
+            if (result.result) {
+                this.props.refreshAsyncStorage(JSON.parse(`{ "${(this.state.label).toLowerCase()}": "${this.state.value}"}`));
+                this.setState({
+                    loading: false,
+                    startingValue: this.state.value,
+                    changedOnce: true
+                });
             } else {
-                this.setState({ loading: false });
+                this.setState({
+                    loading: false
+                });
                 alert("Server Error");
             }
-            
+
         } catch (e) {
             console.log(e);
-            this.setState({ loading: false });
+            this.setState({
+                loading: false
+            });
         }
     }
 
     render() {
         return(
-            <View style={{ flex: 1, justifyContent: 'center', flexDirection: 'row', marginVertical: 10 }}>
+            <View style={{ flex: 1, justifyContent: 'center', flexDirection: 'row', marginVertical: 5 }}>
                 <View style={{ flex: 8 }}>
                     <Item style={{ margin: 10 }}>
                     {this.toggalInputIcon()}

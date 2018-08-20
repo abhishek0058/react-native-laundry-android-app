@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AsyncStorage } from 'react-native';
+import { AsyncStorage, View } from 'react-native';
 import { Container, Spinner, Content, Form, Item, Input, Label, Button, Text, Icon } from 'native-base';
 import BaseURL from './BaseURL';
 
@@ -12,7 +12,8 @@ export default class Login extends Component {
     state = {
         username: '',
         password: '',
-        loading: false
+        loading: false,
+        ready: false
     }
 
     checkPreviousLogin = async () =>  {
@@ -20,6 +21,8 @@ export default class Login extends Component {
             const user = await AsyncStorage.getItem('user');
             if(user) {
                 this.props.navigation.replace('home')
+            } else {
+                this.setState({ ready: true })
             }
         } catch (e) {
             console.log('Login', e)
@@ -79,35 +82,47 @@ export default class Login extends Component {
 
 
     render() {
-        return (
-            <Container>
-                <Content padder>
-                    <Form style={{
-                        marginVertical: 20
-                    }}>
-                        <Item floatingLabel>
-                            <Label>Username</Label>
-                            <Input onChangeText={ username => this.setState({ username }) } />
-                        </Item>
-                        <Item floatingLabel>
-                            <Label>Password</Label>
-                            <Input onChangeText={ password => this.setState({ password }) } />
-                        </Item>
-                    </Form>
-
-                    {this.loginButton()}
-
-                    <Text style={{ alignSelf: 'center', fontSize: 20 }}>OR</Text>
-
-                    <Button iconLeft Info
-                        onPress={() => this.props.navigation.navigate('signup')}  
-                        style={{ marginVertical: 50, alignSelf: 'center' }}
-                    >
-                        <Icon name='person-add' />
-                        <Text>Signup</Text>
-                    </Button>
-                </Content>
-            </Container>
-        );
+        if(this.state.ready) {
+            return (
+                <Container>
+                    <Content padder>
+                        <Form style={{
+                            marginVertical: 20
+                        }}>
+                            <Item floatingLabel>
+                                <Label>Username</Label>
+                                <Input onChangeText={ username => this.setState({ username }) } />
+                            </Item>
+                            <Item floatingLabel>
+                                <Label>Password</Label>
+                                <Input onChangeText={ password => this.setState({ password }) } />
+                            </Item>
+                        </Form>
+    
+                        {this.loginButton()}
+    
+                        <Text style={{ alignSelf: 'center', fontSize: 20 }}>OR</Text>
+    
+                        <Button iconLeft Info
+                            onPress={() => this.props.navigation.navigate('signup')}  
+                            style={{ marginVertical: 50, alignSelf: 'center' }}
+                        >
+                            <Icon name='person-add' />
+                            <Text>Signup</Text>
+                        </Button>
+                    </Content>
+                </Container>
+            );
+        }
+        else {
+            return (
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                    <Spinner color="green" />
+                    <Text style={{ fontSize: 17, fontWeight: 'bold', fontStyle: 'italic' }}>
+                        Loading ...
+                    </Text>
+                </View>
+            )
+        }
     }
 }
