@@ -1,11 +1,15 @@
 import React, { Component } from "react";
 import { View, SafeAreaView, ScrollView, Image } from "react-native";
 import { createDrawerNavigator, DrawerItems } from "react-navigation";
-
+import { Icon } from 'native-base' 
 import Profile from "./profile/Profile";
 import Package from "./packages/Package";
 import Machine from "./machine/Machine";
-import BaseURL from "./BaseURL";
+import Verify from './verify/Verify';
+import PurchaseHistory from './purchaseHistory/PurchaseHistory';
+
+import { getData } from "./FetchService";
+
 
 const CustomDrawerComponents = props => (
   <SafeAreaView style={{ flex: 1 }}>
@@ -30,9 +34,11 @@ const CustomDrawerComponents = props => (
 
 const HomeNavigator = createDrawerNavigator(
   {
+    Purchases: PurchaseHistory,
+    Verify: Verify,
     Machine: Machine,
     Package: Package,
-    Profile: Profile
+    Profile: Profile,
   },
   {
     contentComponent: CustomDrawerComponents,
@@ -46,6 +52,12 @@ export default class Home extends Component {
   static navigationOptions = {
     header: null
   };
+
+  async componentWillMount() {
+    const id = this.props.navigation.state.params.userid;
+    const result = await getData(`user/single/${id}`);
+    
+  } 
 
   render() {
     // console.log('home', this.props.navigation.state.params)

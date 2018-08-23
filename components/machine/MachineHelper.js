@@ -64,8 +64,6 @@ export default class MachineHelper extends Component {
     }
   }
 
-  
-
   render() {
     const { machine } = this.props;
 

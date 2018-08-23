@@ -12,7 +12,7 @@ const getFromAsync = async key => {
 };
 
 const putInAsync = async (key, value) => {
-  if (key && value) return false;
+  if (!(key && value)) return false;
   try {
     await AsyncStorage.setItem(key, JSON.stringify(value));
     return true;
