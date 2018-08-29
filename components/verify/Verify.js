@@ -16,6 +16,7 @@ class Verify extends Component {
     refresh: true,
     refreshing: false
   };
+  
   refreshIcon = () => {
     if (!this.state.refreshing) {
       return (

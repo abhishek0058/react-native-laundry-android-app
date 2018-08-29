@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { AsyncStorage, View } from "react-native";
+import { Keyboard } from 'react-native'
 import {
   Container,
   Spinner,
@@ -45,6 +46,7 @@ export default class Login extends Component {
   }
 
   async login() {
+    Keyboard.dismiss()
     this.setState({ loading: true });
     const { username, password } = this.state;
     try {
@@ -58,13 +60,13 @@ export default class Login extends Component {
         body: JSON.stringify({ username, password })
       });
       const result = await response.json();
-      this.setState({ loading: false });
       //console.log('Login result', JSON.stringify(result[0]))
-
       if (result.length) {
         await AsyncStorage.setItem("user", JSON.stringify(result[0]));
-        this.props.navigation.replace("home");
+        this.setState({ loading: false });
+        this.props.navigation.replace("home", { userid: result[0].id });
       } else {
+        this.setState({ loading: false });
         alert("Invalid Username/Password");
       }
     } catch (e) {
@@ -131,7 +133,7 @@ export default class Login extends Component {
         <View
           style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
         >
-          <Spinner color="green" />
+          <Spinner color="red" />
           <Text
             style={{ fontSize: 17, fontWeight: "bold", fontStyle: "italic" }}
           >

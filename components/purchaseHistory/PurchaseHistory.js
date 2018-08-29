@@ -17,7 +17,7 @@ class PurchaseHistory extends Component {
   render() {
     return (
       <View style={{ flex: 1 }}>
-          <Nav />
+          <Nav screenProps={{rootNav: this.props.navigation}} />
       </View>
     );
   }

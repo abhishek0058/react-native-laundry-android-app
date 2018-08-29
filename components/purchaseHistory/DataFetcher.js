@@ -4,6 +4,7 @@ import { View, ScrollView } from "react-native";
 import { getData } from "../FetchService";
 import { getFromAsync } from "../AsyncService";
 import PurchaseList from "./PurchaseList";
+import CurrentPackage from './CurrentPackage';
 
 class DataFetcher extends Component {
   static navigationOptions = {
@@ -17,7 +18,6 @@ class DataFetcher extends Component {
   };
 
   fetchHistory = async (userid) => {
-      console.log(userid)
     try {
       const data = await getData(`purchaseHistory/userPurchases/${userid}`);
       this.setState({ data: data.result, fetching: false });
@@ -43,7 +43,8 @@ class DataFetcher extends Component {
         <Icon
           name="refresh"
           onPress={() => {
-            this.setState({ refresh: !this.state.refresh, refreshing: true });
+            this.setState({ refreshing: true })
+            this.fetchHistory(this.state.user.id);
             setTimeout(() => {
               this.setState({ refreshing: false });
             }, 2000);
@@ -52,24 +53,6 @@ class DataFetcher extends Component {
       );
     } else if (this.state.data.length) {
       return <Spinner color="blue" />;
-    } else {
-      return (
-        <View
-          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-        >
-          <Text
-            style={{
-              fontSize: 17,
-              fontStyle: "italic",
-              fontWeight: "bold",
-              textAlign: "center"
-            }}
-          >
-            No Previous Purchase History
-            <Icon name="copy" />
-          </Text>
-        </View>
-      );
     }
   };
 
@@ -79,7 +62,7 @@ class DataFetcher extends Component {
         <Left>
           <Icon
             name="menu"
-            onPress={() => this.props.navigation.openDrawer()}
+            onPress={() => this.props.screenProps.rootNav.openDrawer()}
           />
         </Left>
         <Body>
@@ -130,7 +113,12 @@ class DataFetcher extends Component {
     return (
       <View style={{ flex: 1, backgroundColor: 'white' }}>
         {this.makeHeader()}
-        {this.makeBody()}
+        <View style={{ flex: 2, borderTopWidth: 1, borderTopColor: 'grey' }}>
+          <CurrentPackage data={this.state.data.length ? this.state.data[0] : []} />
+        </View>
+        <View style={{ flex: 8 }}>
+          {this.makeBody()}
+        </View>
       </View>
     );
   }

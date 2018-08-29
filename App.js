@@ -8,6 +8,8 @@ import Login from './components/Login'
 import Signup from './components/Singup'
 import Home from './components/Home'
 
+import NavigationService from './components/NavigationService';
+
 export default class App extends React.Component {
 
   constructor(props) {
@@ -37,7 +39,11 @@ export default class App extends React.Component {
     return (
       <SafeAreaView style={{ flex: 1, paddingTop: Platform.OS === 'ios' ? 0 : Expo.Constants.statusBarHeight }}>
         <Root>
-          <RootStack />
+          <RootStack
+            ref={navigatorRef => {
+              NavigationService.setTopLevelNavigator(navigatorRef);
+            }} 
+          />
         </Root>
       </SafeAreaView>
     );

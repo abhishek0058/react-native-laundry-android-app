@@ -14,17 +14,17 @@ export default class PurchaseList extends Component {
 
   makeListItem = data => {
     return data.map(item => (
-      <ListItem avatar key={item.id} style={{ margin: 5 }}>
+      <ListItem avatar key={item.id}>
         <Left>
           <Thumbnail source={{ uri: `${BaseURL}/images/${item.logo}` }} />
         </Left>
         <Body>
-          <Text>{item.name}</Text>
-          <Text note>{item.date.substring(0, item.date.indexOf("T"))}</Text>
+          <Text style={{ fontSize: 19}}>{item.name}</Text>
+          <Text>{"\u20B9" + " " + item.amount}</Text>
         </Body>
         <Right>
-          <Text style={{ fontWeight: "bold" }}>
-            {"\u20B9" + " " + item.amount}
+          <Text>
+            {item.date.substring(0, item.date.indexOf("T"))}
           </Text>
         </Right>
       </ListItem>

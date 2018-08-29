@@ -34,4 +34,15 @@ const changeInAsync = async (key, obj, newValue) => {
   }
 };
 
-export { getFromAsync, putInAsync, changeInAsync };
+const removeFromAsync = async (key) => {
+  try {
+    if (!key) return false;
+    await AsyncStorage.removeItem(key);
+    return true
+  } catch (e) {
+    console.log("Async Service get", e);
+    return false
+  }
+};
+
+export { getFromAsync, putInAsync, changeInAsync, removeFromAsync };

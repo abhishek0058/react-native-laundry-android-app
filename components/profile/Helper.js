@@ -100,7 +100,24 @@ export default class Helper extends Component {
     }
   };
 
+  makePostBody = () => {
+    if(this.state.label == "Name") {
+      return `{ 
+        "${this.state.label.toLowerCase()}": "${this.state.value}", 
+        "id": ${this.state.userid}
+      }`
+    } 
+    else {
+      return `{ 
+        "${this.state.label.toLowerCase()}": "${this.state.value}", 
+        "id": ${this.state.userid}, 
+        "${this.state.label.toLowerCase()}_verified": false
+      }`
+    }
+  }
+
   changeProfileField = async () => {
+    const body = this.makePostBody()
     try {
       this.setState({
         edit: false,
@@ -113,10 +130,9 @@ export default class Helper extends Component {
           "Content-Type": "application/json; charset=utf-8"
           // "Content-Type": "application/x-www-form-urlencoded",
         },
-        body: `{ "${this.state.label.toLowerCase()}": "${
-          this.state.value
-        }", "id": ${this.state.userid}, "${this.state.label.toLowerCase()}_verified": false}`
+        body: body
       });
+
       const result = await response.json();
       if (result.result) {
         this.props.refreshAsyncStorage(
