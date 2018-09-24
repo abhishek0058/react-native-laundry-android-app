@@ -4,18 +4,19 @@ import { createDrawerNavigator, DrawerItems } from "react-navigation";
 import Profile from "./profile/Profile";
 import Package from "./packages/Package";
 import Machine from "./machine/Machine";
-import Verify from './verify/Verify';
-import PurchaseHistory from './purchaseHistory/PurchaseHistory';
-import Logout from './Logout'
+import Verify from "./verify/Verify";
+import PurchaseHistory from "./purchaseHistory/PurchaseHistory";
+import Logout from "./Logout";
+import Instructions from './instruction/Instructions';
+import Faq from "./faq/Faq";
 
 import { getData } from "./FetchService";
-
 
 const CustomDrawerComponents = props => (
   <SafeAreaView style={{ flex: 1 }}>
     <View
       style={{
-        height: 200,
+        height: 180,
         backgroundColor: "white",
         alignItems: "center",
         justifyContent: "center"
@@ -39,6 +40,8 @@ const HomeNavigator = createDrawerNavigator(
     Purchases: PurchaseHistory,
     Verify: Verify,
     Profile: Profile,
+    Instructions: Instructions,
+    Faq: Faq,
     Logout: Logout
   },
   {
@@ -57,7 +60,7 @@ export default class Home extends Component {
   async componentWillMount() {
     const id = this.props.navigation.state.params.userid;
     const result = await getData(`user/single/${id}`);
-  } 
+  }
 
   render() {
     // console.log('home', this.props.navigation.state.params)

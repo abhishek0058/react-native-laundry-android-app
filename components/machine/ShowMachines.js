@@ -11,7 +11,8 @@ import {
   Header,
   Left,
   Right,
-  Body
+  Body,
+  Button
 } from "native-base";
 import { getFromAsync } from "../AsyncService";
 import { getData } from "../FetchService";
@@ -44,7 +45,8 @@ class ShowMachines extends Component {
 
   fetchCycles = async userid => {
     const data = await getData(`account/cyclesLeft/${userid}`);
-    this.setState({ cycles_left: data.result[0].cycles_left });
+    if (data.result.length)
+      this.setState({ cycles_left: data.result[0].cycles_left });
   };
 
   async componentDidMount() {
@@ -52,7 +54,7 @@ class ShowMachines extends Component {
     await this.setState({ user });
     this.fetchMachineFromServer(user);
     this.socket.on("newMachines", data => {
-      console.log(data.result.length)
+      console.log(data.result.length);
       this.setState({ loading: false });
       if (data.result.length) {
         if (
@@ -64,12 +66,12 @@ class ShowMachines extends Component {
       }
     });
     this.fetchCycles(user.id);
-    console.log(this.socket.id)
+    console.log(this.socket.id);
   }
 
   componentWillUnmount() {
-    console.log('unmounting')
-    this.socket.disconnect()
+    console.log("unmounting");
+    this.socket.disconnect();
   }
 
   showMachinesCards = () => {
@@ -187,6 +189,20 @@ class ShowMachines extends Component {
             >
               No machines found.
             </Text>
+            <Text style={{ fontSize: 20, padding: 20 }}>Try</Text>
+            <Button
+              info
+              full
+              iconRight
+              onPress={() => this.props.screenProps.root.navigate("Profile")}
+              style={{
+                width: 250,
+                alignSelf: "center"
+              }}
+            >
+              <Text style={{ fontSize: 15 }}>Set Location</Text>
+              <Icon name="send" style={{ color: "white" }} />
+            </Button>
           </View>
         </View>
       );

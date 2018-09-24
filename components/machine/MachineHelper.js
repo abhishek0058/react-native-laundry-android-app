@@ -6,7 +6,8 @@ import {
   Text,
   Body,
   Button,
-  Spinner
+  Spinner,
+  Icon
 } from "native-base";
 import { View } from "react-native";
 import { getData } from "../FetchService";
@@ -114,6 +115,7 @@ export default class MachineHelper extends Component {
             <Text>
               {machine.name} {this.timer()}
             </Text>
+            <Icon name="timer" />
           </CardItem>
           <CardItem>
             <Body>{this.makeButton()}</Body>

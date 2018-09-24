@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { AsyncStorage, View } from "react-native";
+import { AsyncStorage, View, Image } from "react-native";
 import { Keyboard } from 'react-native'
 import {
   Container,
@@ -42,7 +42,20 @@ export default class Login extends Component {
 
   async componentWillMount() {
     //await AsyncStorage.removeItem('user')
-    this.checkPreviousLogin();
+    try {
+      const email = this.props.navigation.getParam('email');
+      const password = this.props.navigation.getParam('password')
+      console.log(this.props.navigation.getParam('email'))
+      if(email && password) {
+        await this.setState({ username: email, password})
+        this.login();
+      }
+      else {
+        this.checkPreviousLogin();
+      }
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   async login() {
@@ -97,10 +110,11 @@ export default class Login extends Component {
       return (
         <Container>
           <Content padder>
+            <Image
+            style={{ height: 100, width: 200, alignSelf: 'center' }}
+              source={require('../assets/logo.png')}
+            />
             <Form
-              style={{
-                marginVertical: 20
-              }}
             >
               <Item floatingLabel>
                 <Label>Username</Label>
@@ -120,7 +134,7 @@ export default class Login extends Component {
               iconLeft
               Info
               onPress={() => this.props.navigation.navigate("signup")}
-              style={{ marginVertical: 50, alignSelf: "center" }}
+              style={{ marginVertical: 20, alignSelf: "center" }}
             >
               <Icon name="person-add" />
               <Text>Signup</Text>
