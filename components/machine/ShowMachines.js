@@ -111,7 +111,7 @@ class ShowMachines extends Component {
             this.setState({ refreshing: true });
             setTimeout(() => {
               this.setState({ refreshing: false });
-            }, 2000);
+            }, 1000);
           }}
         />
       );
@@ -130,7 +130,7 @@ class ShowMachines extends Component {
           />
         </Left>
         <Body>
-          <Text style={{ fontSize: 18, fontWeight: "bold" }}>MACHINES</Text>
+          <Text style={{ fontSize: 18, fontWeight: "bold" }}>Laundry Bay Machines</Text>
         </Body>
         <Right>{this.refreshIcon()}</Right>
       </Header>
