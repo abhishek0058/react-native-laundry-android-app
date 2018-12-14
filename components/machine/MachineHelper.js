@@ -10,13 +10,24 @@ import {
   Icon
 } from "native-base";
 import { View } from "react-native";
-import { getData } from "../FetchService";
 
 export default class MachineHelper extends Component {
   state = {
-    loading: false
+    loading: false,
+    timer: ""
   };
 
+  async componentDidMount() {
+    this.socket.on("startTimer", data => {
+      console.log(data);
+    });
+  }
+  
+  componentDidUpdate(old) {
+    if (old.machine.status !== this.props.machine.status) {
+      this.setState({ loading: false });
+    }
+  }
   start = () => {
     this.setState({ loading: true });
     this.props.socket.emit("machineOn", {
@@ -77,25 +88,12 @@ export default class MachineHelper extends Component {
     }
   };
 
-  timer = () => {
-    const { status } = this.props.machine;
-    if (status  == "busy") {
-      return <Text> - Timer </Text>;
-    }
-  };
-
   showStatus = status => {
     if (status == "active")
       return <Text style={{ color: "green" }}>Active</Text>;
     else if (status == "busy")
       return <Text style={{ color: "red" }}>Busy</Text>;
   };
-
-  componentDidUpdate(old) {
-    if (old.machine.status !== this.props.machine.status) {
-      this.setState({ loading: false });
-    }
-  }
 
   checkCycles = () => {
     if(this.props.cycles_left > 0) {
@@ -107,13 +105,13 @@ export default class MachineHelper extends Component {
 
   render() {
     const { machine } = this.props;
-    
+    const { timer } = this.state;
     return (
       <Content padder>
         <Card>
           <CardItem header>
             <Text>
-              {machine.name} {this.timer()}
+              {machine.name} {timer}
             </Text>
             <Icon name="timer" />
           </CardItem>
