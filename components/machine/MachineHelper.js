@@ -20,7 +20,8 @@ export default class MachineHelper extends Component {
     this.state = {
       loading: false,
       timer: "--",
-      clockColor: "black"
+      clockColor: "black",
+      message: ""
     };
   }
 
@@ -30,8 +31,9 @@ export default class MachineHelper extends Component {
         if(this.props.user.id == data.userid && this.props.machine.channel == data.channel) {
           console.log("startTimer", data);
           this.setState({
-            timer: `Minutes Left:- ${data.timer}`,
-            clockColor: "green"
+            timer: `Timer: ${data.timer} minutes left`,
+            clockColor: "green",
+            message: "Machine has started"
           });
         }
       });
@@ -39,7 +41,8 @@ export default class MachineHelper extends Component {
         if(this.props.user.id == data.userid && this.props.machine.channel == data.channel) {
           console.log("timerUpdated", data);
           this.setState({
-            timer: `Minutes Left:-w ${data.timer}`
+            timer: `Timer: ${data.timer} minutes left`,
+            message: ""
           });
         }
       });
@@ -47,8 +50,27 @@ export default class MachineHelper extends Component {
         if(this.props.user.id == data.userid && this.props.machine.channel == data.channel) {
           console.log("stopTimer", data);
           this.setState({
-            timer: `Minutes Left:- ${data.timer}`,
-            clockColor: "red"
+            timer: `Timer: ${data.timer} minutes left`,
+            clockColor: "red",
+            message: "Times Up"
+          });
+        }
+      });
+      this.socket.on("machineIsOn", data => {
+        if(this.props.user.id == data.userid && this.props.machine.channel == data.channel) {
+          console.log("machineIsOn", data);
+          this.setState({
+            clockColor: "green",
+            message: "Machine is running"
+          });
+        }
+      });
+      this.socket.on("machineISOff", data => {
+        if(this.props.user.id == data.userid && this.props.machine.channel == data.channel) {
+          console.log("machineISOff", data);
+          this.setState({
+            clockColor: "red",
+            message: "Machine is OFF"
           });
         }
       });
@@ -90,7 +112,7 @@ export default class MachineHelper extends Component {
     });
   };
 
-  makeButton = () => {
+  makeButtonOrTimer = () => {
     const { machine } = this.props;
     if (this.state.loading) {
       return (
@@ -139,13 +161,20 @@ export default class MachineHelper extends Component {
       machine.status == "busy" &&
       machine.activator_user == this.props.user.id
     ) {
+      // return (
+        // <View style={{ flex: 1, flexDirection: "row" }}>
+        //   <Button danger onPress={() => this.stop()}>
+        //     <Text>Stop</Text>
+        //   </Button>
+        // </View>
+      // );
       return (
         <View style={{ flex: 1, flexDirection: "row" }}>
-          <Button danger onPress={() => this.stop()}>
-            <Text>Stop</Text>
-          </Button>
+          <Text style={{ fontSize: 20, fontWeight: '600' }}>
+            {this.state.timer}
+          </Text>
         </View>
-      );
+      )
     } else if (machine.status == "busy") {
       return (
         <Text
@@ -181,7 +210,7 @@ export default class MachineHelper extends Component {
 
   render() {
     const { machine } = this.props;
-    const { timer, clockColor } = this.state;
+    const { clockColor, message } = this.state;
     return (
       <Content padder>
         <Card>
@@ -190,12 +219,12 @@ export default class MachineHelper extends Component {
               {machine.name}
             </Text>
             <Icon name="timer" style={{ marginLeft: 10, marginRight: 10, color: clockColor }} />
-            <Text>
-              {timer}
+            <Text style={{ color: clockColor }}>
+              {message}
             </Text>
           </CardItem>
           <CardItem>
-            <Body>{this.makeButton()}</Body>
+            <Body>{this.makeButtonOrTimer()}</Body>
           </CardItem>
           <View />
           <CardItem footer>{this.showStatus(machine.status)}</CardItem>
