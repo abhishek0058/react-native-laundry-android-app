@@ -158,8 +158,9 @@ export default class MachineHelper extends Component {
         </Button>
       );
     } else if (
-      machine.status == "busy" &&
-      machine.activator_user == this.props.user.id
+      machine.status == "busy" 
+      // x&&
+      // machine.activator_user == this.props.user.id
     ) {
       // return (
         // <View style={{ flex: 1, flexDirection: "row" }}>
@@ -175,27 +176,28 @@ export default class MachineHelper extends Component {
           </Text>
         </View>
       )
-    } else if (machine.status == "busy") {
-      return (
-        <Text
-          style={{
-            fontSize: 16,
-            fontWeight: "bold",
-            marginLeft: 10,
-            textAlign: "center"
-          }}
-        >
-          Machine is being used by another user
-        </Text>
-      );
-    }
+    } 
+    // else if (machine.status == "busy") {
+    //   return (
+    //     <Text
+    //       style={{
+    //         fontSize: 16,
+    //         fontWeight: "bold",
+    //         marginLeft: 10,
+    //         textAlign: "center"
+    //       }}
+    //     >
+    //       Machine is being used by another user
+    //     </Text>
+    //   );
+    // }
   };
 
   showStatus = status => {
     if (status == "active")
       return <Text style={{ color: "green" }}>Active</Text>;
     else if (status == "busy")
-      return <Text style={{ color: "red" }}>Busy</Text>;
+      return (<Text style={{ color: "red" }}>Machine is being used by another user</Text>);
   };
 
   checkCycles = () => {
