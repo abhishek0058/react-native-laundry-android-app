@@ -31,17 +31,18 @@ export default class MachineHelper extends Component {
         if(this.props.user.id == data.userid && this.props.machine.channel == data.channel) {
           console.log("startTimer", data);
           this.setState({
-            timer: `Timer: ${data.timer} minutes left`,
+            timer: `${data.timer} minutes left`,
             clockColor: "green",
             message: "Machine has started"
           });
+          this.props.openStartInstructionPopup();
         }
       });
       this.socket.on("timerUpdated", data => {
         if(this.props.user.id == data.userid && this.props.machine.channel == data.channel) {
           console.log("timerUpdated", data);
           this.setState({
-            timer: `Timer: ${data.timer} minutes left`,
+            timer: `${data.timer} minutes left`,
             message: ""
           });
         }
@@ -50,10 +51,11 @@ export default class MachineHelper extends Component {
         if(this.props.user.id == data.userid && this.props.machine.channel == data.channel) {
           console.log("stopTimer", data);
           this.setState({
-            timer: `Timer: ${data.timer} minutes left`,
+            timer: `${data.timer} minutes left`,
             clockColor: "red",
             message: "Times Up"
           });
+          this.props.openEndInstructionPopup();
         }
       });
       this.socket.on("machineIsOn", data => {
@@ -159,7 +161,7 @@ export default class MachineHelper extends Component {
       );
     } else if (
       machine.status == "busy" 
-      // x&&
+      // &&
       // machine.activator_user == this.props.user.id
     ) {
       // return (
@@ -194,8 +196,11 @@ export default class MachineHelper extends Component {
   };
 
   showStatus = status => {
+    const { machine } = this.props;
     if (status == "active")
       return <Text style={{ color: "green" }}>Active</Text>;
+    else if(status == "busy" && machine.activator_user == this.props.user.id)
+      return (<Text style={{ color: "green" }}>You are using this machine</Text>)
     else if (status == "busy")
       return (<Text style={{ color: "red" }}>Machine is being used by another user</Text>);
   };

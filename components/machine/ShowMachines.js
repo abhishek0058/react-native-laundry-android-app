@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import SocketIOClient from "socket.io-client";
+import PopUpStart from "../PopUp/PopUpStart";
+import PopUpEnd from "../PopUp/PopUpEnd";
 import {
   View,
   Text,
@@ -27,7 +29,9 @@ class ShowMachines extends Component {
       data: [],
       user: {},
       loading: false,
-      cycles_left: 0
+      cycles_left: 0,
+      showStartPopup: false,
+      showEndPopup: false
     };
   }
 
@@ -82,6 +86,10 @@ class ShowMachines extends Component {
         user={this.state.user}
         socket={this.socket}
         cycles_left={this.state.cycles_left}
+        openStartInstructionPopup={() =>
+          this.setState({ showStartPopup: true })
+        }
+        openEndInstructionPopup={() => this.setState({ showEndPopup: true })}
       />
     ));
   };
@@ -164,6 +172,20 @@ class ShowMachines extends Component {
     } else if (data.length) {
       return (
         <View style={{ flex: 1 }}>
+          <PopUpStart
+            show={this.state.showStartPopup}
+            hide={() => this.setState({ showStartPopup: false })}
+            onPressOk={() => this.setState({ showStartPopup: false })}
+            onPressCancel={() => this.setState({ showStartPopup: false })}
+            title={"Instructions"}
+          />
+          <PopUpEnd
+            show={this.state.showEndPopup}
+            hide={() => this.setState({ showEndPopup: false })}
+            onPressOk={() => this.setState({ showEndPopup: false })}
+            onPressCancel={() => this.setState({ showEndPopup: false })}
+            title={"Washing Done"}
+          />
           {this.makeHeader()}
           {this.showLocation(data)}
           <View style={{ flex: 10 }}>
