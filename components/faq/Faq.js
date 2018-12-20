@@ -16,7 +16,7 @@ class Faq extends Component {
         <Left>
           <Icon
             name="menu"
-            onPress={() => this.props.screenProps.root.openDrawer()}
+            onPress={() => this.props.navigation.openDrawer()}
           />
         </Left>
         <Body>

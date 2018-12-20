@@ -35,7 +35,7 @@ const CustomDrawerComponents = props => (
 
 const HomeNavigator = createDrawerNavigator(
   {
-    Machine: Machine,
+    'Washing Machines': Machine,
     Package: Package,
     Purchases: PurchaseHistory,
     Verify: Verify,

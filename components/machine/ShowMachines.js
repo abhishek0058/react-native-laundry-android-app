@@ -130,7 +130,7 @@ class ShowMachines extends Component {
           />
         </Left>
         <Body>
-          <Text style={{ fontSize: 18, fontWeight: "bold" }}>Laundry Bay Machines</Text>
+          <Text style={{ fontSize: 18, fontWeight: "bold" }}>Laundry Bay</Text>
         </Body>
         <Right>{this.refreshIcon()}</Right>
       </Header>
