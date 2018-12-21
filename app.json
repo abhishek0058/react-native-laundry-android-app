@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "app",
-    "description": "This project is really great.",
+    "description": "An IoT project for distributed Laundry System",
     "slug": "app",
     "privacy": "public",
     "sdkVersion": "29.0.0",
@@ -21,7 +21,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.numeric.laundrybay"
     },
     "android": {
       "package": "com.numeric.laundrybay"
