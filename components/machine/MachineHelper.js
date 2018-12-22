@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import SocketIOClient from "socket.io-client";
 import BaseURL from "../BaseURL";
+import { getData } from "../FetchService";
 import {
   Content,
   Card,
@@ -19,7 +20,7 @@ export default class MachineHelper extends Component {
     this.socket = SocketIOClient(BaseURL);
     this.state = {
       loading: false,
-      timer: "--",
+      timer: "",
       clockColor: "black",
       message: ""
     };
@@ -28,7 +29,7 @@ export default class MachineHelper extends Component {
   componentDidMount() {
     try {
       this.socket.on("startTimer", data => {
-        if(this.props.user.id == data.userid && this.props.machine.channel == data.channel) {
+        if(this.props.machine.channel == data.channel) {
           console.log("startTimer", data);
           this.setState({
             timer: `${data.timer} minutes left`,
@@ -39,7 +40,7 @@ export default class MachineHelper extends Component {
         }
       });
       this.socket.on("timerUpdated", data => {
-        if(this.props.user.id == data.userid && this.props.machine.channel == data.channel) {
+        if(this.props.machine.channel == data.channel) {
           console.log("timerUpdated", data);
           this.setState({
             timer: `${data.timer} minutes left`,
@@ -48,7 +49,7 @@ export default class MachineHelper extends Component {
         }
       });
       this.socket.on("stopTimer", data => {
-        if(this.props.user.id == data.userid && this.props.machine.channel == data.channel) {
+        if(this.props.machine.channel == data.channel) {
           console.log("stopTimer", data);
           this.setState({
             timer: `${data.timer} minutes left`,
@@ -205,12 +206,22 @@ export default class MachineHelper extends Component {
       return (<Text style={{ color: "red" }}>Machine is being used by another user</Text>);
   };
 
-  checkCycles = () => {
-    if (this.props.cycles_left > 0) {
-      this.start();
-    } else {
+  checkCycles = async () => {
+    const data = await getData(`account/cyclesLeft/${this.props.user.id}`);
+    if (data.result.length) {
+      // this.setState({ cycles_left:  });
+      if (parseInt(data.result[0].cycles_left) > 0) {
+        this.start();
+      } else {
+        // alert(
+        //   "You do not have any cycles in your account please.\nPlease purchase a package to add cycles."
+        // );
+        this.props.openPopSimple()
+      }
+    }
+    else {
       alert(
-        "You do not have any cycles in your account please.\nPlease purchase a package to add cycles."
+        "Can't Fetch your Account Details right now.\nConsider trying again."
       );
     }
   };

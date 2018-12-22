@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, ScrollView } from "react-native";
+import { View, ScrollView, ImageBackground } from "react-native";
 import { Text, Icon, Header, Left, Right, Body } from "native-base";
 import Helper from "./Helper";
 import { data } from './data'
@@ -42,12 +42,22 @@ class Faq extends Component {
 
   render() {
     return (
+      <ImageBackground
+        source={require("../../assets/bg.png")}
+        style={{
+          flex: 1,
+          width: "100%",
+          height: "100%"
+          // resizeMode: "cover"
+        }}
+      >
         <View style={{ flex: 1 }}>
-            {this.makeHeader()}
-            <ScrollView style={{ flex: 1, backgroundColor: 'white' }}>
-                {this.makeHelpers()}
-            </ScrollView>
+          {this.makeHeader()}
+          <ScrollView style={{ flex: 1, backgroundColor: 'white' }}>
+            {this.makeHelpers()}
+          </ScrollView>
         </View>
+      </ImageBackground>
         );
   }
 }

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { ScrollView, View } from "react-native";
+import { ScrollView, View, ImageBackground } from "react-native";
 import { Text, Icon, Header, Left, Right, Body } from "native-base";
 import Helper from "./Helper";
 import { data } from './data'
@@ -41,12 +41,22 @@ class Instructions extends Component {
 
   render() {
     return (
-      <View style={{ flex: 1 }}>
-        {this.makeHeader()}
-        <ScrollView style={{ flex: 1 }}>
+      <ImageBackground
+        source={require("../../assets/bg.png")}
+        style={{
+          flex: 1,
+          width: "100%",
+          height: "100%"
+          // resizeMode: "cover"
+        }}
+      >
+        <View style={{ flex: 1 }}>
+          {this.makeHeader()}
+          <ScrollView style={{ flex: 1 }}>
             {this.makeHelpers()}
-        </ScrollView>
-      </View>
+          </ScrollView>
+        </View>
+      </ImageBackground>
     );
   }
 }

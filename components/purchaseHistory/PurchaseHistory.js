@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { createStackNavigator } from "react-navigation";
-import { View } from 'react-native';
+import { View, ImageBackground } from 'react-native';
 import { Icon } from 'native-base'
 import DataFetcher from './DataFetcher'
 
@@ -16,9 +16,19 @@ class PurchaseHistory extends Component {
 
   render() {
     return (
-      <View style={{ flex: 1 }}>
-          <Nav screenProps={{rootNav: this.props.navigation}} />
-      </View>
+      <ImageBackground
+        source={require("../../assets/bg.png")}
+        style={{
+          flex: 1,
+          width: "100%",
+          height: "100%"
+          // resizeMode: "cover"
+        }}
+      >
+        <View style={{ flex: 1 }}>
+          <Nav screenProps={{ rootNav: this.props.navigation }} />
+        </View>
+      </ImageBackground>
     );
   }
 }

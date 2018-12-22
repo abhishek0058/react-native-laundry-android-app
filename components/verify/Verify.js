@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { ImageBackground } from "react-native";
 import { createStackNavigator } from "react-navigation";
 import { Text, Icon, Header, Left, Body, Right, View, Spinner } from "native-base";
 import Panel from "./Panel";
@@ -59,12 +60,22 @@ class Verify extends Component {
 
   render() {
     return (
-      <View style={{ flex: 1 }}>
-        {this.makeHeader()}
-        <View style={{ flex: 1, justifyContent: "center" }}>
-          <Panel refresh={this.state.refresh} />
+      <ImageBackground
+        source={require("../../assets/bg.png")}
+        style={{
+          flex: 1,
+          width: "100%",
+          height: "100%"
+          // resizeMode: "cover"
+        }}
+      >
+        <View style={{ flex: 1 }}>
+          {this.makeHeader()}
+          <View style={{ flex: 1, justifyContent: "center" }}>
+            <Panel refresh={this.state.refresh} />
+          </View>
         </View>
-      </View>
+      </ImageBackground>
     );
   }
 }

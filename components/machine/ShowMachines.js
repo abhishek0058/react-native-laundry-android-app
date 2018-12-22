@@ -1,7 +1,9 @@
 import React, { Component } from "react";
+import { ImageBackground } from "react-native";
 import SocketIOClient from "socket.io-client";
 import PopUpStart from "../PopUp/PopUpStart";
 import PopUpEnd from "../PopUp/PopUpEnd";
+import PopSimple from "../PopUp/PopSimple";
 import {
   View,
   Text,
@@ -31,7 +33,8 @@ class ShowMachines extends Component {
       loading: false,
       cycles_left: 0,
       showStartPopup: false,
-      showEndPopup: false
+      showEndPopup: false,
+      PopSimple: false
     };
   }
 
@@ -90,6 +93,7 @@ class ShowMachines extends Component {
           this.setState({ showStartPopup: true })
         }
         openEndInstructionPopup={() => this.setState({ showEndPopup: true })}
+        openPopSimple={() => this.setState({ PopSimple: true })}
       />
     ));
   };
@@ -171,27 +175,44 @@ class ShowMachines extends Component {
       );
     } else if (data.length) {
       return (
-        <View style={{ flex: 1 }}>
-          <PopUpStart
-            show={this.state.showStartPopup}
-            hide={() => this.setState({ showStartPopup: false })}
-            onPressOk={() => this.setState({ showStartPopup: false })}
-            onPressCancel={() => this.setState({ showStartPopup: false })}
-            title={"Instructions"}
-          />
-          <PopUpEnd
-            show={this.state.showEndPopup}
-            hide={() => this.setState({ showEndPopup: false })}
-            onPressOk={() => this.setState({ showEndPopup: false })}
-            onPressCancel={() => this.setState({ showEndPopup: false })}
-            title={"Washing Done"}
-          />
-          {this.makeHeader()}
-          {this.showLocation(data)}
-          <View style={{ flex: 10 }}>
-            <Content>{this.showMachinesCards()}</Content>
+        <ImageBackground
+          source={require("../../assets/bg.png")}
+          style={{
+            flex: 1,
+            width: "100%",
+            height: "100%"
+            // resizeMode: "cover"
+          }}
+        >
+          <View style={{ flex: 1 }}>
+            <PopUpStart
+              show={this.state.showStartPopup}
+              hide={() => this.setState({ showStartPopup: false })}
+              onPressOk={() => this.setState({ showStartPopup: false })}
+              onPressCancel={() => this.setState({ showStartPopup: false })}
+              title={"Instructions"}
+            />
+            <PopUpEnd
+              show={this.state.showEndPopup}
+              hide={() => this.setState({ showEndPopup: false })}
+              onPressOk={() => this.setState({ showEndPopup: false })}
+              onPressCancel={() => this.setState({ showEndPopup: false })}
+              title={"Washing Done"}
+            />
+            <PopSimple 
+              show={this.state.PopSimple}
+              hide={() => this.setState({ PopSimple: false })}
+              onPressOk={() => this.setState({ PopSimple: false })}
+              onPressCancel={() => this.setState({ PopSimple: false })}
+              title={"Reminder"}
+            />
+            {this.makeHeader()}
+            {this.showLocation(data)}
+            <View style={{ flex: 10 }}>
+              <Content>{this.showMachinesCards()}</Content>
+            </View>
           </View>
-        </View>
+        </ImageBackground>
       );
     } else if (data.length == 0 && !this.state.loading) {
       return (

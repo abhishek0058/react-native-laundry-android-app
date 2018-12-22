@@ -112,7 +112,7 @@ export default class Login extends Component {
           <Content padder>
             <Image
             style={{ height: 100, width: 200, alignSelf: 'center' }}
-              source={require('../assets/logo.png')}
+              source={require('../assets/logo-old.png')}
             />
             <Form
             >
