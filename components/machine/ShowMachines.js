@@ -44,16 +44,25 @@ class ShowMachines extends Component {
 
   fetchMachineFromServer = async user => {
     this.setState({ loading: true });
-    const machines = await getData(
-      `machineSocket/ByCityAndHostel/${user.cityid}/${user.hostelid}`
-    );
-    this.setState({ data: machines.result, loading: false });
+    try {
+      const machines = await getData(
+        `machineSocket/ByCityAndHostel/${user.cityid}/${user.hostelid}`
+      );
+      if(machines && machines.result)
+        this.setState({ data: machines.result, loading: false });
+    } catch (e) {
+      console.log("fetchMachineFromServer", e);
+    }
   };
 
   fetchCycles = async userid => {
-    const data = await getData(`account/cyclesLeft/${userid}`);
-    if (data.result.length)
-      this.setState({ cycles_left: data.result[0].cycles_left });
+    try {
+      const data = await getData(`account/cyclesLeft/${userid}`);
+      if (data && data.result && data.result.length)
+        this.setState({ cycles_left: data.result[0].cycles_left });
+    } catch(e) {
+      console.log("fetch cycles", e);
+    }
   };
 
   async componentDidMount() {

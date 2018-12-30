@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Ionicons } from "@expo/vector-icons";
-import { Image, Alert, Dimensions, ScrollView } from "react-native";
+import { Image, Alert, Dimensions, ScrollView, ImageBackground } from "react-native";
 import {
   Container,
   Header,
@@ -32,7 +32,11 @@ export default class ShowPackages extends Component {
           name="refresh"
           onPress={() => {
             this.props.fetchPackages();
-            this.setState({ refreshing: true, transaction: false, buying: false });
+            this.setState({
+              refreshing: true,
+              transaction: false,
+              buying: false
+            });
             setTimeout(() => {
               this.setState({ refreshing: false });
             }, 2000);
@@ -75,7 +79,7 @@ export default class ShowPackages extends Component {
   render() {
     const { height } = Dimensions.get("window");
     const { data, length } = this.props;
-    console.log(data)
+    console.log(data);
     if (this.state.transaction == "completed") {
       return (
         <Container>
@@ -123,8 +127,8 @@ export default class ShowPackages extends Component {
             <Ionicons name="ios-cloud-upload-outline" size={50} color="green" />
             <Spinner color="blue" />
             <Text style={{ fontStyle: "italic", fontSize: 17 }}>
-              Buying Package of {"\u20B9"} {data.amount} for{" "}
-              {data.cycles} cycles
+              Buying Package of {"\u20B9"} {data.amount} for {data.cycles}{" "}
+              cycles
             </Text>
             <Text style={{ fontSize: 15 }}>Please Wait</Text>
           </View>
@@ -134,11 +138,21 @@ export default class ShowPackages extends Component {
       return (
         <Container>
           {this.makeHeader()}
-          <ScrollView
-            style={{ flex: 1, padding: 10, backgroundColor: "#CDD5D1" }}
+          <ImageBackground
+            source={require("../../assets/bg.png")}
+            style={{
+              flex: 1,
+              width: "100%",
+              height: "100%"
+              // resizeMode: "cover"
+            }}
           >
-            {this.makeTiles(data)}
-          </ScrollView>
+            <ScrollView
+              style={{ flex: 1, padding: 10 }}
+            >
+              {this.makeTiles(data)}
+            </ScrollView>
+          </ImageBackground>
         </Container>
       );
     } else {

@@ -4,10 +4,10 @@ import BaseURL from "../BaseURL";
 class Helper extends Component {
   imageMaker = () => {
     if (this.props.image) {
-      console.log(
-        "Instructions -> Helper",
-        `${BaseURL}/app/${this.props.image}`
-      );
+      // console.log(
+      //   "Instructions -> Helper",
+      //   `${BaseURL}/app/${this.props.image}`
+      // );
       return (
         <Image
           style={{
@@ -32,7 +32,7 @@ class Helper extends Component {
           flex: 1,
           paddingVertical: 20,
           paddingHorizontal: 20,
-          backgroundColor: "white",
+          // backgroundColor: "white",
           borderTopWidth: 0.25,
           borderBottomColor: "black",
           borderTopColor: "black"

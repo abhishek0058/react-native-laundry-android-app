@@ -26,7 +26,7 @@ export default class MachineHelper extends Component {
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     try {
       this.socket.on("startTimer", data => {
         if(this.props.machine.channel == data.channel) {
@@ -36,7 +36,8 @@ export default class MachineHelper extends Component {
             clockColor: "green",
             message: "Machine has started"
           });
-          this.props.openStartInstructionPopup();
+          if(this.props.user.id == data.userid)
+            this.props.openStartInstructionPopup();
         }
       });
       this.socket.on("timerUpdated", data => {
@@ -56,7 +57,8 @@ export default class MachineHelper extends Component {
             clockColor: "red",
             message: "Times Up"
           });
-          this.props.openEndInstructionPopup();
+          if(this.props.user.id == data.userid)
+            this.props.openEndInstructionPopup();
         }
       });
       this.socket.on("machineIsOn", data => {
@@ -77,6 +79,14 @@ export default class MachineHelper extends Component {
           });
         }
       });
+      const timerData = await getData(`machine/timer/${this.props.user.id}/${this.props.machine.channel}`);
+      if(timerData.length) {
+        this.setState({
+          timer: `${timerData[0].minutes_left} minutes left`,
+          clockColor: "black",
+          message: "waiting for status"
+        })
+      }
     } catch (e) {
       console.log("machinehelper -> component did mount", e);
     }

@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { Header, Left, Body, Right, Text, Spinner, Icon } from "native-base";
-import { View, ScrollView } from "react-native";
+import { View, ScrollView, ImageBackground } from "react-native";
 import { getData } from "../FetchService";
 import { getFromAsync } from "../AsyncService";
 import PurchaseList from "./PurchaseList";
-import CurrentPackage from './CurrentPackage';
+import CurrentPackage from "./CurrentPackage";
 
 class DataFetcher extends Component {
   static navigationOptions = {
@@ -17,7 +17,7 @@ class DataFetcher extends Component {
     data: []
   };
 
-  fetchHistory = async (userid) => {
+  fetchHistory = async userid => {
     try {
       const data = await getData(`purchaseHistory/userPurchases/${userid}`);
       this.setState({ data: data.result, fetching: false });
@@ -43,7 +43,7 @@ class DataFetcher extends Component {
         <Icon
           name="refresh"
           onPress={() => {
-            this.setState({ refreshing: true })
+            this.setState({ refreshing: true });
             this.fetchHistory(this.state.user.id);
             setTimeout(() => {
               this.setState({ refreshing: false });
@@ -92,9 +92,9 @@ class DataFetcher extends Component {
     } else if (this.state.data.length) {
       return (
         <ScrollView>
-            <PurchaseList data={this.state.data} />
+          <PurchaseList data={this.state.data} />
         </ScrollView>
-      )
+      );
     } else {
       return (
         <View
@@ -111,15 +111,25 @@ class DataFetcher extends Component {
 
   render() {
     return (
-      <View style={{ flex: 1, backgroundColor: 'white' }}>
-        {this.makeHeader()}
-        <View style={{ flex: 2, borderTopWidth: 1, borderTopColor: 'grey' }}>
-          <CurrentPackage data={this.state.data.length ? this.state.data[0] : []} />
+      <ImageBackground
+        source={require("../../assets/bg.png")}
+        style={{
+          flex: 1,
+          width: "100%",
+          height: "100%"
+          // resizeMode: "cover"
+        }}
+      >
+        <View style={{ flex: 1, backgroundColor: "white" }}>
+          {this.makeHeader()}
+          <View style={{ flex: 2, borderTopWidth: 1, borderTopColor: "grey" }}>
+            <CurrentPackage
+              data={this.state.data.length ? this.state.data[0] : []}
+            />
+          </View>
+          <View style={{ flex: 8 }}>{this.makeBody()}</View>
         </View>
-        <View style={{ flex: 8 }}>
-          {this.makeBody()}
-        </View>
-      </View>
+      </ImageBackground>
     );
   }
 }

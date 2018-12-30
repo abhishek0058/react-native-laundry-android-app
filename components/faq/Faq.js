@@ -53,7 +53,7 @@ class Faq extends Component {
       >
         <View style={{ flex: 1 }}>
           {this.makeHeader()}
-          <ScrollView style={{ flex: 1, backgroundColor: 'white' }}>
+          <ScrollView style={{ flex: 1, }}>
             {this.makeHelpers()}
           </ScrollView>
         </View>

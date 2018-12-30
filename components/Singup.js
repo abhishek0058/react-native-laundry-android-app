@@ -99,8 +99,8 @@ export default class Signup extends Component {
           }}
           onPress={() => this.register()}
         >
-          <Text>Submit</Text>
           <Icon name="person-add" />
+          <Text>Signup</Text>
         </Button>
       );
     }
@@ -167,7 +167,7 @@ export default class Signup extends Component {
         </Content>
         <Image
           style={{ height: 100, width: 200, alignSelf: "center" }}
-          source={require("../assets/logo.png")}
+          source={require("../assets/logo-old.png")}
         />
       </Container>
     );
