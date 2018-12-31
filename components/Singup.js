@@ -11,7 +11,7 @@ import {
   KeyboardAvoidingView
 } from "native-base";
 import { View, Image, Alert } from "react-native";
-const logo = require("../assets/logo.png");
+// const logo = require("../assets/logo.png");
 
 export default class Signup extends Component {
 

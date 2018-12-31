@@ -5,6 +5,7 @@ import Profile from "./profile/Profile";
 import Package from "./packages/Package";
 import Machine from "./machine/Machine";
 import Verify from "./verify/Verify";
+import RefundPolicy from "./refund-policy/RefundPolicy";
 import PurchaseHistory from "./purchaseHistory/PurchaseHistory";
 import Logout from "./Logout";
 import Instructions from './instruction/Instructions';
@@ -38,10 +39,11 @@ const HomeNavigator = createDrawerNavigator(
     'Washing Machines': Machine,
     Package: Package,
     Purchases: PurchaseHistory,
-    Verify: Verify,
+    // Verify: Verify,
     Profile: Profile,
     Instructions: Instructions,
     Faq: Faq,
+    'Our Policies': RefundPolicy,
     Logout: Logout
   },
   {

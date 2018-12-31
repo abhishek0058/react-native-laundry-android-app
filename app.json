@@ -8,9 +8,9 @@
     "platforms": ["ios", "android"],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/lb_icon.png",
+    "icon": "./assets/final_logo.png",
     "splash": {
-      "image": "./assets/new_splash_logo.png",
+      "image": "./assets/final_logo.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },

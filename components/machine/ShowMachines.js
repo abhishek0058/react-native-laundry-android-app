@@ -4,6 +4,7 @@ import SocketIOClient from "socket.io-client";
 import PopUpStart from "../PopUp/PopUpStart";
 import PopUpEnd from "../PopUp/PopUpEnd";
 import PopSimple from "../PopUp/PopSimple";
+import PopError from "../PopUp/PopError";
 import {
   View,
   Text,
@@ -34,7 +35,8 @@ class ShowMachines extends Component {
       cycles_left: 0,
       showStartPopup: false,
       showEndPopup: false,
-      PopSimple: false
+      PopSimple: false,
+      error: false
     };
   }
 
@@ -103,6 +105,7 @@ class ShowMachines extends Component {
         }
         openEndInstructionPopup={() => this.setState({ showEndPopup: true })}
         openPopSimple={() => this.setState({ PopSimple: true })}
+        openPopError={() => this.setState({ PopError: true })}
       />
     ));
   };
@@ -214,6 +217,12 @@ class ShowMachines extends Component {
               onPressOk={() => this.setState({ PopSimple: false })}
               onPressCancel={() => this.setState({ PopSimple: false })}
               title={"Reminder"}
+            />
+            <PopError 
+              show={this.state.error}
+              hide={() => this.setState({ error: false })}
+              onPressOk={() => this.setState({ error: false })}
+              title={"Oops"}
             />
             {this.makeHeader()}
             {this.showLocation(data)}

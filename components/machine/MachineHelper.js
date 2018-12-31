@@ -75,12 +75,23 @@ export default class MachineHelper extends Component {
           console.log("machineISOff", data);
           this.setState({
             clockColor: "red",
-            message: "Machine is OFF"
+            message: "Timer is Paused"
           });
         }
       });
-      const timerData = await getData(`machine/timer/${this.props.user.id}/${this.props.machine.channel}`);
+      this.socket.on("error", data => {
+        if(this.props.user.id == data.userid && this.props.machine.channel == data.channel) {
+          console.log("error", data);
+          openPopError();
+          this.setState({
+            clockColor: "black",
+            message: ""
+          });
+        }
+      });
+      const timerData = await getData(`machine/timer/${this.props.machine.channel}`);
       if(timerData.length) {
+        console.log("timerData", timerData)
         this.setState({
           timer: `${timerData[0].minutes_left} minutes left`,
           clockColor: "black",
