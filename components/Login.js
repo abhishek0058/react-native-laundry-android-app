@@ -122,7 +122,7 @@ export default class Login extends Component {
               </Item>
               <Item floatingLabel>
                 <Label>Password</Label>
-                <Input onChangeText={password => this.setState({ password })} />
+                <Input onChangeText={password => this.setState({ password })} secureTextEntry={true} />
               </Item>
             </Form>
 

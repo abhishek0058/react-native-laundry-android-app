@@ -10,7 +10,7 @@
     "orientation": "portrait",
     "icon": "./assets/lb_icon.png",
     "splash": {
-      "image": "./assets/logo_white.png",
+      "image": "./assets/new_splash_logo.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
