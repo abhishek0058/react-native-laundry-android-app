@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { AsyncStorage, View, Image } from "react-native";
-import { Keyboard } from 'react-native'
+import { Keyboard } from "react-native";
 import {
   Container,
   Spinner,
@@ -31,7 +31,7 @@ export default class Login extends Component {
     try {
       const user = await AsyncStorage.getItem("user");
       if (user) {
-        this.props.navigation.replace("home", { userid: (JSON.parse(user)).id });
+        this.props.navigation.replace("home", { userid: JSON.parse(user).id });
       } else {
         this.setState({ ready: true });
       }
@@ -43,23 +43,22 @@ export default class Login extends Component {
   async componentWillMount() {
     //await AsyncStorage.removeItem('user')
     try {
-      const email = this.props.navigation.getParam('email');
-      const password = this.props.navigation.getParam('password')
-      console.log(this.props.navigation.getParam('email'))
-      if(email && password) {
-        await this.setState({ username: email, password})
+      const email = this.props.navigation.getParam("email");
+      const password = this.props.navigation.getParam("password");
+
+      if (email && password) {
+        await this.setState({ username: email, password });
         this.login();
-      }
-      else {
+      } else {
         this.checkPreviousLogin();
       }
     } catch (e) {
-      console.log(e)
+      console.log(e);
     }
   }
 
   async login() {
-    Keyboard.dismiss()
+    Keyboard.dismiss();
     this.setState({ loading: true });
     const { username, password } = this.state;
     try {
@@ -92,12 +91,7 @@ export default class Login extends Component {
       return <Spinner style={{ marginVertical: 50, alignSelf: "center" }} />;
     } else {
       return (
-        <Button
-          iconLeft
-          success
-          onPress={() => this.login()}
-          style={{ marginVertical: 50, alignSelf: "center" }}
-        >
+        <Button iconLeft success onPress={() => this.login()}>
           <Icon name="key" />
           <Text>Login</Text>
         </Button>
@@ -111,34 +105,47 @@ export default class Login extends Component {
         <Container>
           <Content padder>
             <Image
-            style={{ height: 100, width: 200, alignSelf: 'center' }}
-              source={require('../assets/logo-old.png')}
+              style={{ height: 100, width: 200, alignSelf: "center" }}
+              source={require("../assets/logo-old.png")}
             />
-            <Form
-            >
+            <Form>
               <Item floatingLabel>
-                <Label>Username</Label>
+                <Label>Mobile Number</Label>
                 <Input onChangeText={username => this.setState({ username })} />
               </Item>
               <Item floatingLabel>
                 <Label>Password</Label>
-                <Input onChangeText={password => this.setState({ password })} secureTextEntry={true} />
+                <Input
+                  onChangeText={password => this.setState({ password })}
+                  secureTextEntry={true}
+                />
               </Item>
             </Form>
+            <View style={{ flex: 1, flexDirection: "row", padding: 20 }}>
+              <View>{this.loginButton()}</View>
+              <View
+              >
+                <Text
+                  style={{
+                    color: "blue",
+                    paddingHorizontal: 20,
+                    alignSelf: "center"
+                  }}    
+                  onPress={() => {this.props.navigation.navigate("forget")}}
+                >
+                  Forget password
+                </Text>
+              </View>
+            </View>
 
-            {this.loginButton()}
-
-            <Text style={{ alignSelf: "center", fontSize: 20 }}>OR</Text>
-
-            <Button
+            <Text
               iconLeft
               Info
               onPress={() => this.props.navigation.navigate("signup")}
-              style={{ marginVertical: 20, alignSelf: "center" }}
+              style={{ marginTop: 150, alignSelf: "center", color: "blue" }}
             >
-              <Icon name="person-add" />
-              <Text>Signup</Text>
-            </Button>
+              New user ? Register
+            </Text>
           </Content>
         </Container>
       );

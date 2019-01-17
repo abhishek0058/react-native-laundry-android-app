@@ -7,7 +7,8 @@ import { createStackNavigator } from 'react-navigation';
 import Login from './components/Login'
 import Signup from './components/Singup'
 import Home from './components/Home'
-
+import VerifyOtp from "./components/VerifyOtp"
+import ForgetPassword from "./components/ForgetPassword";
 import NavigationService from './components/NavigationService';
 
 export default class App extends React.Component {
@@ -53,7 +54,9 @@ export default class App extends React.Component {
 const RootStack = createStackNavigator({
   login: Login,
   signup: Signup,
-  home: Home
+  home: Home,
+  verify: VerifyOtp,
+  forget: ForgetPassword
 }, {
   initialRouteName: 'login'
 });

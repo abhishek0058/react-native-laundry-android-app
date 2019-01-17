@@ -50,6 +50,16 @@ export default class Signup extends Component {
                 ],
                 { cancelable: true }
             )
+        else if(mobile.length != 10) {
+          Alert.alert(
+              'Fill All Fields correctly',
+              'Mobile number should be 10-digit long',
+              [
+                  {text: 'OK', onPress: () => console.log('OK Pressed')},
+              ],
+              { cancelable: true }
+          )
+        }
         else 
             Alert.alert(
                 'Fill All Fields',
@@ -78,10 +88,15 @@ export default class Signup extends Component {
       const result = await response.json();
       this.setState({ loading: false });
       console.log("Signup result", result);
-      if (result.result) 
-        this.props.navigation.replace("login", { email, password });
+      if (result.result) {
+        this.props.navigation.push("verify", { mobile });
+      }
+      else {
+        alert(result.message)
+      }
     } catch (e) {
       console.log("Add User ERROR", e);
+      alert("server is unreachable")
     }
   };
 
@@ -106,21 +121,6 @@ export default class Signup extends Component {
     }
   };
 
-  hidePassword = () => {
-    let temp = "";
-    for (let i = 0; i < this.state.password.length; i++) temp += "*";
-    return temp;
-  };
-
-  handlePasswordChange = newPassword => {
-    const { password } = this.state;
-    if (password.length < newPassword.length)
-      this.setState({
-        password: password + newPassword.charAt(newPassword.length - 1)
-      });
-    else if (password.length > newPassword.length)
-      this.setState({ password: password.substr(0, newPassword.length) });
-  };
 
   render() {
     return (
@@ -159,8 +159,8 @@ export default class Signup extends Component {
             <Icon active name="key" />
             <Input
               placeholder="Password"
-              onChangeText={password => this.handlePasswordChange(password)}
-              value={this.hidePassword()}
+              secureTextEntry={true}
+              onChangeText={password => this.setState({ password })}
             />
           </Item>
           {this.signupButton()}

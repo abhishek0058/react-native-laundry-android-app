@@ -27,6 +27,7 @@ const postData = async (url, body) => {
           return result;
     } catch (e) {
         console.log(url, e)
+        return e;
     }
 }
 
