@@ -1,27 +1,30 @@
 import React, { Component } from "react";
 import { Ionicons } from "@expo/vector-icons";
-import { Image, Alert, Dimensions, ScrollView, ImageBackground } from "react-native";
+import { Image, Alert, Dimensions, ScrollView, ImageBackground, WebView } from "react-native";
 import {
   Container,
   Header,
   View,
-  Card,
-  CardItem,
-  Thumbnail,
   Text,
   Left,
   Body,
   Icon,
   Right,
   Spinner,
-  Button
+  Button,
 } from "native-base";
 import PackageTile from "./PackageTile";
-
+import BaseURL from "../BaseURL";
 export default class ShowPackages extends Component {
-  state = {
-    refreshing: false
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      refreshing: false,
+      userId: null,
+      packageId: null,
+      amount: null
+    }
+  }
 
   parentSetState = obj => this.setState(obj);
 
@@ -76,11 +79,56 @@ export default class ShowPackages extends Component {
     ));
   };
 
+  _onNavigationStateChange(webViewState){
+    if(webViewState.url == "http://laundrybay.in/close") {
+      this.setState({
+        transaction: "completed",
+        userId: null,
+        packageId: null,
+        amount: null,
+        buying: false
+      })
+    }
+    else if(webViewState.url == "http://laundrybay.in/failed") {
+      this.setState({
+        transaction: "failed",
+        userId: null,
+        packageId: null,
+        amount: null,
+        buying: false
+      })
+    }
+    else if(webViewState.url == "http://laundrybay.in/cancel") {
+      this.setState({
+        transaction: false,
+        userId: null,
+        packageId: null,
+        amount: null,
+        buying: false
+      })
+    }
+    console.log(webViewState.url)
+  }
+
   render() {
     const { height } = Dimensions.get("window");
     const { data, length } = this.props;
-    console.log(data);
-    if (this.state.transaction == "completed") {
+    const { userId, packageId, amount } = this.state;
+
+    if(this.state.buying) {
+      if(!userId || !packageId || !amount) {
+        alert("error");
+        console.log(userId, packageId, amount)
+        return null;
+      }
+      return (
+        <WebView
+          // source={{ uri: `http://google.com` }}
+          source={{uri: `${BaseURL}/account/buy?userid=${userId}&packageid=${packageId}&amount=${amount}`}}
+          onNavigationStateChange={this._onNavigationStateChange.bind(this)}
+        />
+      );
+    } else if (this.state.transaction == "completed") {
       return (
         <Container>
           {this.makeHeader()}
@@ -114,23 +162,6 @@ export default class ShowPackages extends Component {
             <Text style={{ fontSize: 15 }}>
               We'll report you shortly by Email or SMS
             </Text>
-          </View>
-        </Container>
-      );
-    } else if (this.state.buying) {
-      return (
-        <Container>
-          {this.makeHeader()}
-          <View
-            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-          >
-            <Ionicons name="ios-cloud-upload-outline" size={50} color="green" />
-            <Spinner color="blue" />
-            <Text style={{ fontStyle: "italic", fontSize: 17 }}>
-              Buying Package of {"\u20B9"} {data.amount} for {data.cycles}{" "}
-              cycles
-            </Text>
-            <Text style={{ fontSize: 15 }}>Please Wait</Text>
           </View>
         </Container>
       );
