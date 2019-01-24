@@ -27,13 +27,22 @@ class PackageTile extends Component {
     }
   };
 
+  redirect = () => {
+    this.props.parentSetState({
+      userId: this.props.userid,
+      packageId: this.props.data.id,
+      amount: this.props.data.amount,
+      buying: true
+    })
+  }
+
   confirming = async () => {
     Alert.alert(
       "Confirm?",
       "Are you sure",
       [
         { text: "No", onPress: () => alert("Canceled"), style: "cancel" },
-        { text: "YES", onPress: () => this.buyPackage() }
+        { text: "YES", onPress: () => this.redirect() }
       ],
       { cancelable: true }
     );
