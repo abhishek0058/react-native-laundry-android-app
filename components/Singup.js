@@ -35,7 +35,16 @@ export default class Signup extends Component {
     return result;
   }
   
-  register = () => {
+  _handleSignUpClick = () => {
+    if(!this.state.loading) {
+      this.setState({ loading: true }, () => this.register())
+    }
+  }
+
+  register = async () => {
+    if(this.state.loading)
+      return null;
+    this.setState({ loading: true });
     const { name, email, mobile, password } = this.state;
     console.log(this.state)
     if(this.validateEmail(email) && name.length && email.length && mobile.length == 10 && password.length >= 8) {
@@ -73,7 +82,6 @@ export default class Signup extends Component {
   };
 
   register2 = async () => {
-    this.setState({ loading: true });
     const { name, email, mobile, password } = this.state;
     try {
       const response = await fetch(`${BaseURL}/user/new`, {
