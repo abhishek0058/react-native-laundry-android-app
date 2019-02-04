@@ -26,7 +26,8 @@
     },
     "android": {
       "package": "com.numeric.laundrybay",
-      "versionCode": 5
+      "versionCode": 6,
+      "permissions": []
     }
   }
 }

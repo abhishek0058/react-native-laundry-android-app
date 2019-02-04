@@ -5,6 +5,8 @@ import PopUpStart from "../PopUp/PopUpStart";
 import PopUpEnd from "../PopUp/PopUpEnd";
 import PopSimple from "../PopUp/PopSimple";
 import PopError from "../PopUp/PopError";
+import PopLoadingMachinesStatus from "../PopUp/PopLoadingMachinesStatus";
+
 import {
   View,
   Text,
@@ -36,7 +38,8 @@ class ShowMachines extends Component {
       showStartPopup: false,
       showEndPopup: false,
       PopSimple: false,
-      error: false
+      error: false,
+      loadingPopup: true
     };
   }
 
@@ -223,6 +226,12 @@ class ShowMachines extends Component {
               hide={() => this.setState({ error: false })}
               onPressOk={() => this.setState({ error: false })}
               title={"Oops"}
+            />
+            <PopLoadingMachinesStatus
+              show={this.state.loadingPopup}
+              hide={() => this.setState({ loadingPopup: false })}
+              onPressOk={() => console.log("on pressed")}
+              title={"Fetching machines status"}
             />
             {this.makeHeader()}
             {this.showLocation(data)}
