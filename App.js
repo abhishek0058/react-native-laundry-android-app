@@ -1,6 +1,6 @@
 import React from 'react';
 import { Root } from "native-base";
-import Expo, { Font, AppLoading } from "expo";
+import Expo, { Font, AppLoading, Constants } from "expo";
 import { SafeAreaView, Platform } from 'react-native'
 import { createStackNavigator } from 'react-navigation';
 
@@ -10,6 +10,12 @@ import Home from './components/Home'
 import VerifyOtp from "./components/VerifyOtp"
 import ForgetPassword from "./components/ForgetPassword";
 import NavigationService from './components/NavigationService';
+
+console.ignoredYellowBox = ['Remote debugger'];
+import { YellowBox } from 'react-native';
+YellowBox.ignoreWarnings([
+    'Unrecognized WebSocket connection option(s) `agent`, `perMessageDeflate`, `pfx`, `key`, `passphrase`, `cert`, `ca`, `ciphers`, `rejectUnauthorized`. Did you mean to put these under `headers`?'
+]);
 
 export default class App extends React.Component {
 
@@ -38,7 +44,7 @@ export default class App extends React.Component {
       );
     }
     return (
-      <SafeAreaView style={{ flex: 1, paddingTop: Platform.OS === 'ios' ? 0 : Expo.Constants.statusBarHeight }}>
+      <SafeAreaView style={{ flex: 1, paddingTop: Platform.OS === 'ios' ? 0 : Constants.statusBarHeight }}>
         <Root>
           <RootStack
             ref={navigatorRef => {
