@@ -2,16 +2,7 @@ import React, { Component } from "react";
 import SocketIOClient from "socket.io-client";
 import BaseURL from "../BaseURL";
 import { getData } from "../FetchService";
-import {
-  Content,
-  Card,
-  CardItem,
-  Text,
-  Body,
-  Button,
-  Spinner,
-  Icon
-} from "native-base";
+import {  Content,  Card,  CardItem,  Text,  Body,  Button,  Spinner,  Icon } from "native-base";
 import { View } from "react-native";
 
 export default class MachineHelper extends Component {
@@ -34,7 +25,7 @@ export default class MachineHelper extends Component {
           this.setState({
             timer: `${data.timer} minutes left`,
             clockColor: "green",
-            message: "Machine has started"
+            message: "Started"
           });
           if(this.props.user.id == data.userid)
             this.props.openStartInstructionPopup();
@@ -171,9 +162,7 @@ export default class MachineHelper extends Component {
             textAlign: "center",
             color: "red"
           }}
-        >
-          Machine is not connected to the server.
-        </Text>
+        > Power failure </Text>
       );
     } else if (machine.status == "active") {
       return (

@@ -1,15 +1,5 @@
 import React, { Component } from "react";
-import {
-  Container,
-  Content,
-  Item,
-  Input,
-  Icon,
-  Button,
-  Text,
-  Spinner,
-  KeyboardAvoidingView
-} from "native-base";
+import {  Container,  Content,  Item,  Input,  Icon,  Button,  Text,  Spinner,  KeyboardAvoidingView} from "native-base";
 import { View, Image, Alert } from "react-native";
 // const logo = require("../assets/logo.png");
 
@@ -30,9 +20,7 @@ export default class Signup extends Component {
 
   validateEmail = (email) =>  {
     var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    const result =  re.test(email);
-    console.log(result)
-    return result;
+    return re.test(email); 
   }
   
   _handleSignUpClick = () => {
@@ -143,7 +131,7 @@ export default class Signup extends Component {
           <Item style={{ margin: 10 }}>
             <Icon active name="person" />
             <Input
-              placeholder="Full Name"
+              placeholder="Name"
               onChangeText={name => this.setState({ name })}
             />
           </Item>

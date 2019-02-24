@@ -40,7 +40,11 @@ export default class PopError extends Component {
       >
         <DialogContent>
           <Text style={{ padding: 20, fontWeight: "700", color: "red" }}>
-            Sorry, can't get your machine get started.
+            {
+              this.props.message ?
+              this.props.message :
+              "Sorry, can't get your machine get started."
+            }
           </Text>
         </DialogContent>
       </Dialog>

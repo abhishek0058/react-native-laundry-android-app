@@ -10,6 +10,7 @@ import PurchaseHistory from "./purchaseHistory/PurchaseHistory";
 import Logout from "./Logout";
 import Instructions from './instruction/Instructions';
 import Faq from "./faq/Faq";
+import ContactUs from "./contactus/ContactUs";
 
 import { getData } from "./FetchService";
 
@@ -39,11 +40,11 @@ const HomeNavigator = createDrawerNavigator(
     'Washing Machines': Machine,
     Package: Package,
     Purchases: PurchaseHistory,
-    // Verify: Verify,
     Profile: Profile,
     Instructions: Instructions,
     Faq: Faq,
     'Our Policies': RefundPolicy,
+    'Contact us': ContactUs,
     Logout: Logout
   },
   {

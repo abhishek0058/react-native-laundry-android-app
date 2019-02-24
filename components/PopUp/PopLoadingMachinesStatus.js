@@ -17,8 +17,8 @@ export default class PopLoadingMachinesStatus extends Component {
     
     componentWillMount() {
         const timeoutRef = setTimeout(() => {
-            this.props.hide();
-            this.setState({ timeoutRef: null });
+          this.setState({ timeoutRef: null });
+          this.props.hide();
         }, 5000);
         this.setState({ timeoutRef });
     }

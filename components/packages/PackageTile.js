@@ -68,7 +68,7 @@ class PackageTile extends Component {
       >
         <Text style={{ textAlign: "center", fontWeight: "bold", padding: 20 }}>
           {" "}
-          {"\u20B9"} {data.name}{" - "} {data.cycles} cycles 
+          {"\u20B9"} {data.name}{" - "} {data.cycles} wash cycles 
         </Text>
         <Button
           info

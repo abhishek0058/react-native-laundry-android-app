@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { ImageBackground } from "react-native";
+import { ImageBackground, AppState } from "react-native";
 import SocketIOClient from "socket.io-client";
 import PopUpStart from "../PopUp/PopUpStart";
 import PopUpEnd from "../PopUp/PopUpEnd";
@@ -7,20 +7,7 @@ import PopSimple from "../PopUp/PopSimple";
 import PopError from "../PopUp/PopError";
 import PopLoadingMachinesStatus from "../PopUp/PopLoadingMachinesStatus";
 
-import {
-  View,
-  Text,
-  Spinner,
-  Content,
-  Card,
-  CardItem,
-  Icon,
-  Header,
-  Left,
-  Right,
-  Body,
-  Button
-} from "native-base";
+import { View,  Text,  Spinner,  Content,  Card,  CardItem, Icon, Header, Left, Right, Body, Button } from "native-base";
 import { getFromAsync } from "../AsyncService";
 import { getData } from "../FetchService";
 import MachineHelper from "./MachineHelper";
@@ -39,7 +26,9 @@ class ShowMachines extends Component {
       showEndPopup: false,
       PopSimple: false,
       error: false,
-      loadingPopup: true
+      loadingPopup: true,
+      appState: AppState.currentState,
+      timeoutRef: null
     };
   }
 
@@ -88,11 +77,15 @@ class ShowMachines extends Component {
     });
     this.fetchCycles(user.id);
     console.log(this.socket.id);
+    AppState.addEventListener('change', this._handleAppStateChange);
   }
 
   componentWillUnmount() {
-    console.log("unmounting");
+    if(this.state.timeoutRef) {
+      clearTimeout(timeoutRef);
+    }
     this.socket.disconnect();
+    AppState.removeEventListener('change', this._handleAppStateChange);
   }
 
   showMachinesCards = () => {
@@ -166,7 +159,7 @@ class ShowMachines extends Component {
 
   render() {
     const { data } = this.state;
-
+    
     if (this.state.loading) {
       return (
         <View style={{ flex: 1 }}>
@@ -277,6 +270,28 @@ class ShowMachines extends Component {
         </View>
       );
     }
+  }
+
+  _handleAppStateChange = async (nextAppState) => {
+    console.log("state -> ", nextAppState);
+    if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
+      try {
+        const { user } = this.state;
+        this.setState({ loadingPopup: true }, () => {
+          const timeoutRef = setTimeout(() => this.setState({ loadingPopup: false, timeoutRef: null }), 3000);
+          this.setState({ timeoutRef })
+        })
+        const machines = await getData(
+          `machineSocket/ByCityAndHostel/${user.cityid}/${user.hostelid}`
+        );
+        if(machines && machines.result)
+          this.setState({ data: machines.result });
+      } catch (e) {
+        console.log("fetchMachineFromServer", e);
+      }
+      // this.fetchMachineFromServer(this.state.user);
+    }
+    this.setState({appState: nextAppState });
   }
 }
 export default ShowMachines;
