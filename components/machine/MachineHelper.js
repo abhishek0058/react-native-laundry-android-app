@@ -192,13 +192,7 @@ export default class MachineHelper extends Component {
   };
 
   checkCycles = async () => {
-    if(confirm("are you sure")) {
-      alert("ok")
-    }
-    else {
-      alert("here")
-    }
-    return null;
+
     const data = await getData(`account/cyclesLeft/${this.props.user.id}`);
     if (data.result.length) {
       // this.setState({ cycles_left:  });

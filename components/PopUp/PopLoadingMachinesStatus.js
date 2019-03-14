@@ -47,10 +47,13 @@ export default class PopLoadingMachinesStatus extends Component {
         }}
       >
         <DialogContent>
-            <Text style={{ textAlign: 'center', fontSize: 20, paddingTop: 10 }}>
-                Loading ...
-            </Text>
             <Spinner color="green" />
+            <Text style={{ padding: 10, fontSize: 15, fontWeight: '400', textAlign: 'center' }}>
+              Fetching live status
+            </Text>
+            <Text style={{ padding: 10, fontSize: 15, fontWeight: '300' }}>
+             Kindly wait a few seconds or press the refresh button at the the top right corner in case your washing machine's status shows power failure
+            </Text>
         </DialogContent>
       </Dialog>
     );

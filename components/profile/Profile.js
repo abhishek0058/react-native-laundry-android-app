@@ -1,20 +1,8 @@
 import React, { Component } from "react";
 import { View } from "react-native";
 import { AsyncStorage } from "react-native";
-import {
-  Spinner,
-  Content,
-  Form,
-  Item,
-  Input,
-  Label,
-  Button,
-  Text,
-  Icon,
-  Header,
-  Left,
-  Body,
-  Right
+import { 
+  Spinner, Content, Form, Item, Input, Label, Button, Text, Icon, Header, Left, Body, Right
 } from "native-base";
 
 import Helper from "./Helper";
@@ -254,23 +242,13 @@ export default class Profile extends Component {
               <View style={{ flex: 2 }}>
                 {this.makeHelper("Name", user.name, "person", "name")}
               </View>
-              <View style={{ flex: 2 }}>
-                {this.makeHelper(
-                  "Email",
-                  user.email,
-                  "at",
-                  "emailAddress",
-                  "email-address"
-                )}
+              <View style={{ flex: 2, flexDirection: 'row', marginVertical: 10 }}>
+                <Icon active name="at" />
+                <Text style={{ fontSize: 15, fontWeight: '300', marginHorizontal: 10 }}>{user.email}</Text>
               </View>
-              <View style={{ flex: 2 }}>
-                {this.makeHelper(
-                  "Mobile",
-                  user.mobile,
-                  "phone-portrait",
-                  "telephoneNumber",
-                  "numeric"
-                )}
+              <View style={{ flex: 2, flexDirection: 'row', marginVertical: 10 }}>
+                <Icon active name="phone-portrait" />
+                <Text style={{ fontSize: 15, fontWeight: '300', marginHorizontal: 10 }}>{user.mobile}</Text>
               </View>
             </View>
 

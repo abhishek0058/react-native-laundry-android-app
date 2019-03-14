@@ -278,7 +278,7 @@ class ShowMachines extends Component {
       try {
         const { user } = this.state;
         this.setState({ loadingPopup: true }, () => {
-          const timeoutRef = setTimeout(() => this.setState({ loadingPopup: false, timeoutRef: null }), 3000);
+          const timeoutRef = setTimeout(() => this.setState({ loadingPopup: false, timeoutRef: null }), 5000);
           this.setState({ timeoutRef })
         })
         const machines = await getData(
