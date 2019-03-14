@@ -170,18 +170,7 @@ export default class MachineHelper extends Component {
           <Text>Start</Text>
         </Button>
       );
-    } else if (
-      machine.status == "busy" 
-      // &&
-      // machine.activator_user == this.props.user.id
-    ) {
-      // return (
-        // <View style={{ flex: 1, flexDirection: "row" }}>
-        //   <Button danger onPress={() => this.stop()}>
-        //     <Text>Stop</Text>
-        //   </Button>
-        // </View>
-      // );
+    } else if (machine.status == "busy") {
       return (
         <View style={{ flex: 1, flexDirection: "row" }}>
           <Text style={{ fontSize: 20, fontWeight: '600' }}>
@@ -190,20 +179,6 @@ export default class MachineHelper extends Component {
         </View>
       )
     } 
-    // else if (machine.status == "busy") {
-    //   return (
-    //     <Text
-    //       style={{
-    //         fontSize: 16,
-    //         fontWeight: "bold",
-    //         marginLeft: 10,
-    //         textAlign: "center"
-    //       }}
-    //     >
-    //       Machine is being used by another user
-    //     </Text>
-    //   );
-    // }
   };
 
   showStatus = status => {
@@ -217,11 +192,21 @@ export default class MachineHelper extends Component {
   };
 
   checkCycles = async () => {
+    if(confirm("are you sure")) {
+      alert("ok")
+    }
+    else {
+      alert("here")
+    }
+    return null;
     const data = await getData(`account/cyclesLeft/${this.props.user.id}`);
     if (data.result.length) {
       // this.setState({ cycles_left:  });
       if (parseInt(data.result[0].cycles_left) > 0) {
-        this.start();
+        if(confirm("Are you sure ?")) {
+          // this.start();
+          alert("true")
+        }
       } else {
         // alert(
         //   "You do not have any cycles in your account please.\nPlease purchase a package to add cycles."
@@ -247,12 +232,14 @@ export default class MachineHelper extends Component {
               {machine.name}
             </Text>
             <Icon name="timer" style={{ marginLeft: 10, marginRight: 10, color: clockColor }} />
-            <Text style={{ color: clockColor }}>
-              {message}
-            </Text>
           </CardItem>
           <CardItem>
-            <Body>{this.makeButtonOrTimer()}</Body>
+            <Body>
+              {this.makeButtonOrTimer()}
+              <Text style={{ color: clockColor, fontStyle: 'italic' }}>
+                {message}
+              </Text>
+            </Body>
           </CardItem>
           <View />
           <CardItem footer>{this.showStatus(machine.status)}</CardItem>

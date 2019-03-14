@@ -2,11 +2,11 @@
   "expo": {
     "name": "Laundry Bay",
     "description": "An IoT project for distributed Laundry System",
-    "slug": "laundry-app",
+    "slug": "laundry-bay-app",
     "privacy": "public",
     "sdkVersion": "32.0.0",
     "platforms": ["ios", "android"],
-    "version": "2.0.0",
+    "version": "3.1.2",
     "orientation": "portrait",
     "icon": "./assets/final_logo.png",
     "splash": {
@@ -15,18 +15,18 @@
       "backgroundColor": "#ffffff"
     },
     "updates": {
-      "fallbackToCacheTimeout": 0
+      "fallbackToCacheTimeout": 30000
     },
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.numeric.laundrybay"
+      "bundleIdentifier": "com.abhi.laundrybay"
     },
     "android": {
-      "package": "com.numeric.laundrybay",
-      "versionCode": 7,
+      "package": "com.abhi.laundrybay",
+      "versionCode": 11,
       "permissions": []
     }
   }
