@@ -195,17 +195,10 @@ export default class MachineHelper extends Component {
 
     const data = await getData(`account/cyclesLeft/${this.props.user.id}`);
     if (data.result.length) {
-      // this.setState({ cycles_left:  });
       if (parseInt(data.result[0].cycles_left) > 0) {
-        if(confirm("Are you sure ?")) {
-          // this.start();
-          alert("true")
-        }
+          this.start();
       } else {
-        // alert(
-        //   "You do not have any cycles in your account please.\nPlease purchase a package to add cycles."
-        // );
-        this.props.openPopSimple()
+        this.props.openPopSimple();
       }
     }
     else {
