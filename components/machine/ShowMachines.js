@@ -36,14 +36,20 @@ class ShowMachines extends Component {
     header: null
   };
 
-  fetchMachineFromServer = async user => {
+  fetchMachineFromServer = async (user) => {
     this.setState({ loading: true });
     try {
-      const machines = await getData(
-        `machineSocket/ByCityAndHostel/${user.cityid}/${user.hostelid}`
-      );
-      if(machines && machines.result)
-        this.setState({ data: machines.result, loading: false });
+      const url = `newMachineSocket/getAllMachines/${user.hostelid}`;
+      const response = await getData(url);
+      const machines = Object.values(response.result);
+
+      if(machines && machines.length) {
+        console.log("machines", machines);
+        this.setState({ data: machines, loading: false });
+      }
+      else {
+        this.setState({ loading: false });
+      }
     } catch (e) {
       console.log("fetchMachineFromServer", e);
     }
@@ -61,19 +67,37 @@ class ShowMachines extends Component {
 
   async componentDidMount() {
     const user = await getFromAsync("user");
-    await this.setState({ user });
+    this.setState({ user });
     this.fetchMachineFromServer(user);
-    this.socket.on("newMachines", data => {
-      console.log(data.result.length);
+    this.socket.on("refresh", (response) => {
+      const selectHostelId = response.selectHostelId;
       this.setState({ loading: false });
-      if (data.result.length) {
-        if (
-          this.state.user.cityid == data.result[0].cityid &&
-          this.state.user.hostelid == data.result[0].hostelid
-        ) {
-          this.setState({ data: data.result });
+      if (response.machines && response.machines[selectHostelId]) {
+        const machines = Object.values(response.machines[selectHostelId]);
+        if (this.state.user.hostelid == selectHostelId) {
+          this.setState({ data: machines });
         }
       }
+    });
+    this.socket.on("show_pop_up", (response) => {
+      const { user, type } = response;
+      if(user != this.state.user.id)
+        return;
+      switch (type) {
+        case "machineStarted":
+          this.setState({ showStartPopup: true });
+          break;
+        
+        case "machineStopped":
+          this.setState({ showEndPopup: true });
+          break;
+      }
+    });
+    this.socket.on("error_while_turning_machine_on", (response) => {
+      const { user, message } = response;
+      if(user != this.props.user.id) 
+        return;
+      alert(message);
     });
     this.fetchCycles(user.id);
     console.log(this.socket.id);
@@ -106,7 +130,7 @@ class ShowMachines extends Component {
     ));
   };
 
-  showLocation = data => {
+  showLocation = (data) => {
     return (
       <View style={{ flex: 1, padding: 20 }}>
         <Card>
@@ -220,12 +244,6 @@ class ShowMachines extends Component {
               onPressOk={() => this.setState({ error: false })}
               title={"Oops"}
             />
-            <PopLoadingMachinesStatus
-              show={this.state.loadingPopup}
-              hide={() => this.setState({ loadingPopup: false })}
-              onPressOk={() => console.log("on pressed")}
-              title={"Fetching machines status"}
-            />
             {this.makeHeader()}
             {this.showLocation(data)}
             <View style={{ flex: 10 }}>
@@ -276,16 +294,8 @@ class ShowMachines extends Component {
     console.log("state -> ", nextAppState);
     if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
       try {
-        const { user } = this.state;
-        this.setState({ loadingPopup: true }, () => {
-          const timeoutRef = setTimeout(() => this.setState({ loadingPopup: false, timeoutRef: null }), 5000);
-          this.setState({ timeoutRef })
-        })
-        const machines = await getData(
-          `machineSocket/ByCityAndHostel/${user.cityid}/${user.hostelid}`
-        );
-        if(machines && machines.result)
-          this.setState({ data: machines.result });
+        let { user } = this.state;
+        this.fetchMachineFromServer(user);        
       } catch (e) {
         console.log("fetchMachineFromServer", e);
       }

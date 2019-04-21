@@ -41,13 +41,16 @@ export default class PopUpStart extends Component {
         <DialogContent>
           <List>
             <ListItem>
-              <Text style={{ fontStyle: 'italic' }}>Kindly wash coloured clothes separately</Text>
+              <Text style={{ fontStyle: 'italic' }}>Kindly press power button on the washing machine</Text>
             </ListItem>
             <ListItem>
-              <Text style={{ fontStyle: 'italic' }}>Close the machine Lid and press the button 'ON' on the washing machine</Text>
+              <Text style={{ fontStyle: 'italic' }}>Press start button on the washing machine</Text>
             </ListItem>
             <ListItem>
-              <Text style={{ fontWeight: '700' }}>In case of any issue, call on +91-964-403-5102</Text>
+              <Text style={{ fontWeight: '700' }}>Do not press any other buttons on washing machines</Text>
+            </ListItem>
+            <ListItem>
+              <Text style={{ fontStyle: 'italic' }}>In case of any issue, call on +91-964-403-5102</Text>
             </ListItem>
           </List>
         </DialogContent>

@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-import SocketIOClient from "socket.io-client";
-import BaseURL from "../BaseURL";
 import { getData } from "../FetchService";
 import {  Content,  Card,  CardItem,  Text,  Body,  Button,  Spinner,  Icon } from "native-base";
 import { View } from "react-native";
@@ -8,7 +6,7 @@ import { View } from "react-native";
 export default class MachineHelper extends Component {
   constructor(props) {
     super(props);
-    this.socket = SocketIOClient(BaseURL);
+    this.socket = props.socket;
     this.state = {
       loading: false,
       timer: "",
@@ -17,118 +15,23 @@ export default class MachineHelper extends Component {
     };
   }
 
-  async componentDidMount() {
-    try {
-      this.socket.on("startTimer", data => {
-        if(this.props.machine.channel == data.channel) {
-          console.log("startTimer", data);
-          this.setState({
-            timer: `${data.timer} minutes left`,
-            clockColor: "green",
-            message: "Started"
-          });
-          if(this.props.user.id == data.userid)
-            this.props.openStartInstructionPopup();
-        }
-      });
-      this.socket.on("timerUpdated", data => {
-        if(this.props.machine.channel == data.channel) {
-          console.log("timerUpdated", data);
-          this.setState({
-            timer: `${data.timer} minutes left`,
-            message: ""
-          });
-        }
-      });
-      this.socket.on("stopTimer", data => {
-        if(this.props.machine.channel == data.channel) {
-          console.log("stopTimer", data);
-          this.setState({
-            timer: `${data.timer} minutes left`,
-            clockColor: "red",
-            message: "Times Up"
-          });
-          if(this.props.user.id == data.userid)
-            this.props.openEndInstructionPopup();
-        }
-      });
-      this.socket.on("machineIsOn", data => {
-        if(this.props.user.id == data.userid && this.props.machine.channel == data.channel) {
-          console.log("machineIsOn", data);
-          this.setState({
-            clockColor: "green",
-            message: "Machine is running"
-          });
-        }
-      });
-      this.socket.on("machineISOff", data => {
-        if(this.props.user.id == data.userid && this.props.machine.channel == data.channel) {
-          console.log("machineISOff", data);
-          this.setState({
-            clockColor: "red",
-            message: "Timer is Paused"
-          });
-        }
-      });
-      this.socket.on("error", data => {
-        if(this.props.user.id == data.userid && this.props.machine.channel == data.channel) {
-          console.log("error", data);
-          openPopError();
-          this.setState({
-            clockColor: "black",
-            message: ""
-          });
-        }
-      });
-      const timerData = await getData(`machine/timer/${this.props.machine.channel}`);
-      if(timerData.length) {
-        console.log("timerData", timerData)
-        this.setState({
-          timer: `${timerData[0].minutes_left} minutes left`,
-          clockColor: "black",
-          message: "waiting for status"
-        })
-      }
-    } catch (e) {
-      console.log("machinehelper -> component did mount", e);
-    }
-  }
+  start = () => {
+    this.setState({ loading: true });
+    this.props.socket.emit("machine_on", {
+      channel: this.props.machine.channel,
+      user: this.props.user.id
+    });
+  };
 
-  componentDidUpdate(old) {
-    if (old.machine.status !== this.props.machine.status) {
+  componentDidUpdate(prevProps) {
+    if(prevProps.machine._status != this.props.machine._status) {
       this.setState({ loading: false });
     }
   }
 
-  componentWillUnmount() {
-    console.log("unmounting");
-    this.socket.disconnect();
-  }
-
-  start = () => {
-    this.setState({ loading: true });
-    this.props.socket.emit("machineOn", {
-      channel: this.props.machine.channel,
-      cityid: this.props.user.cityid,
-      hostelid: this.props.user.hostelid,
-      machineid: this.props.machine.id,
-      userid: this.props.user.id
-    });
-  };
-
-  stop = () => {
-    this.setState({ loading: true });
-    this.props.socket.emit("machineOff", {
-      channel: this.props.machine.channel,
-      cityid: this.props.user.cityid,
-      hostelid: this.props.user.hostelid,
-      machineid: this.props.machine.id,
-      userid: this.props.user.id
-    });
-  };
-
   makeButtonOrTimer = () => {
     const { machine } = this.props;
+    const { timer } = this.props.machine;
     if (this.state.loading) {
       return (
         <View
@@ -152,7 +55,7 @@ export default class MachineHelper extends Component {
           </Text>
         </View>
       );
-    } else if (machine.status == "inactive") {
+    } else if (machine._status == "inactive") {
       return (
         <Text
           style={{
@@ -164,31 +67,45 @@ export default class MachineHelper extends Component {
           }}
         > Power failure </Text>
       );
-    } else if (machine.status == "active") {
+    } else if (machine._status == "active") {
       return (
         <Button success onPress={() => this.checkCycles()}>
           <Text>Start</Text>
         </Button>
       );
-    } else if (machine.status == "busy") {
+    } else if (machine._status == "busy") {
       return (
         <View style={{ flex: 1, flexDirection: "row" }}>
           <Text style={{ fontSize: 20, fontWeight: '600' }}>
-            {this.state.timer}
+            {timer.min} min {timer.sec} sec
           </Text>
         </View>
       )
-    } 
+    } else if (machine._status == "inProgress") {
+      return (
+        <Text
+          style={{
+            fontSize: 16,
+            fontWeight: "bold",
+            marginLeft: 10,
+            textAlign: "center",
+          }}
+        > In progress </Text>
+      )
+    }
   };
 
-  showStatus = status => {
+  showStatus = (status) => {
     const { machine } = this.props;
-    if (status == "active")
+    if (status == "active") {
       return <Text style={{ color: "green" }}>Active</Text>;
-    else if(status == "busy" && machine.activator_user == this.props.user.id)
+    }
+    else if(status == "busy" && machine.user == this.props.user.id) {
       return (<Text style={{ color: "green" }}>You are using this machine</Text>)
-    else if (status == "busy")
+    }
+    else if (status == "busy") {
       return (<Text style={{ color: "red" }}>Machine is being used by another user</Text>);
+    }
   };
 
   checkCycles = async () => {
@@ -202,9 +119,7 @@ export default class MachineHelper extends Component {
       }
     }
     else {
-      alert(
-        "Can't Fetch your Account Details right now.\nConsider trying again."
-      );
+      alert("Can't Fetch your Account Details right now.\nConsider trying again.");
     }
   };
 
@@ -229,7 +144,7 @@ export default class MachineHelper extends Component {
             </Body>
           </CardItem>
           <View />
-          <CardItem footer>{this.showStatus(machine.status)}</CardItem>
+          <CardItem footer>{this.showStatus(machine._status)}</CardItem>
         </Card>
       </Content>
     );
