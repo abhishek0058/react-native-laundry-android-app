@@ -44,13 +44,17 @@ export default class PopUpStart extends Component {
               <Text style={{ fontStyle: 'italic' }}>Kindly press power button on the washing machine</Text>
             </ListItem>
             <ListItem>
-              <Text style={{ fontStyle: 'italic' }}>Press start button on the washing machine</Text>
+              <Text style={{ fontWeight: 'bold' }}>Please note</Text>
             </ListItem>
             <ListItem>
-              <Text style={{ fontWeight: '700' }}>Do not press any other buttons on washing machines</Text>
+              <Text style={{ fontWeight: '700' }}>
+                Once you press the START button, the washing machine will remain powered 'ON' for 80 minutes, as displayed by the app timer.
+              </Text>
             </ListItem>
             <ListItem>
-              <Text style={{ fontStyle: 'italic' }}>In case of any issue, call on +91-964-403-5102</Text>
+              <Text style={{ fontStyle: 'italic' }}>
+                The Actual washing machine time is much lesser than 80 minutes, which is displayed by the timer on washing machine.
+              </Text>
             </ListItem>
           </List>
         </DialogContent>

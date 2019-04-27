@@ -2,7 +2,7 @@
   "expo": {
     "name": "Testing",
     "description": "An IoT project for distributed Laundry System",
-    "slug": "laundry-bay-app",
+    "slug": "laundry-bay-app-testing",
     "privacy": "public",
     "sdkVersion": "32.0.0",
     "platforms": ["ios", "android"],
