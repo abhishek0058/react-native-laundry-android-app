@@ -191,15 +191,15 @@ export default class VerifyOtp extends Component {
 
   checkAndSend = async () => {
     try {
-      this.setState({ loading: true });
       const { otp } = this.state;
       const mobile = this.props.navigation.getParam("mobile");
-
+      
       if (mobile && otp.length == 6) {
+        this.setState({ loading: true });
         const result = await postData("user/verify_otp", { mobile, otp });
         if (result.result) {
           // alert("Mobile confirmed, Please Login again");
-          this.props.navigation.replace("login", {
+          this.props.navigation.replace("selectCity", {
             email: mobile,
             password: result.data.password
           });

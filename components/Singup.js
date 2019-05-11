@@ -32,21 +32,22 @@ export default class Signup extends Component {
   register = async () => {
     if(this.state.loading)
       return null;
-    this.setState({ loading: true });
-    const { name, email, mobile, password } = this.state;
-    console.log(this.state)
-    if(this.validateEmail(email) && name.length && email.length && mobile.length == 10 && password.length >= 8) {
-        this.register2()
+      const { name, email, mobile, password } = this.state;
+      console.log(this.state)
+      if(this.validateEmail(email) && name.length && email.length && mobile.length == 10 && password.length >= 8) {
+        this.setState({ loading: true });
+        this.register2();
     } else {
-        if(password.length < 8)
-            Alert.alert(
-                'Fill All Fields',
-                'Password must be 8 digit long',
-                [
-                    {text: 'OK', onPress: () => console.log('OK Pressed')},
-                ],
-                { cancelable: true }
-            )
+        if(password.length < 8) {
+          Alert.alert(
+              'Fill All Fields',
+              'Password must be 8 digit long',
+              [
+                  {text: 'OK', onPress: () => console.log('OK Pressed')},
+              ],
+              { cancelable: true }
+          )
+        }
         else if(mobile.length != 10) {
           Alert.alert(
               'Fill All Fields correctly',
@@ -57,15 +58,16 @@ export default class Signup extends Component {
               { cancelable: true }
           )
         }
-        else 
-            Alert.alert(
-                'Fill All Fields',
-                'Do not Leave any field empty',
-                [
-                    {text: 'OK', onPress: () => console.log('OK Pressed')},
-                ],
-                { cancelable: true }
-            )
+        else {
+          Alert.alert(
+              'Fill All Fields',
+              'Do not Leave any field empty',
+              [
+                  {text: 'OK', onPress: () => console.log('OK Pressed')},
+              ],
+              { cancelable: true }
+          )
+        }
     }
   };
 

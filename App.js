@@ -9,6 +9,8 @@ import Signup from './components/Singup'
 import Home from './components/Home'
 import VerifyOtp from "./components/VerifyOtp"
 import ForgetPassword from "./components/ForgetPassword";
+import SelectCity from "./components/location/selectCity";
+import SelectHostel from "./components/location/selectHostel";
 import NavigationService from './components/NavigationService';
 
 console.ignoredYellowBox = ['Remote debugger'];
@@ -58,6 +60,8 @@ export default class App extends React.Component {
 }
 
 const RootStack = createStackNavigator({
+  selectCity: SelectCity,
+  selectHostel: SelectHostel,
   login: Login,
   signup: Signup,
   home: Home,

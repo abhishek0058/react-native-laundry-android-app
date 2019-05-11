@@ -61,8 +61,8 @@ export default class Home extends Component {
   };
 
   async componentWillMount() {
-    const id = this.props.navigation.state.params.userid;
-    const result = await getData(`user/single/${id}`);
+    // const id = this.props.navigation.state.params.userid;
+    // const result = await getData(`user/single/${id}`);
   }
 
   render() {
