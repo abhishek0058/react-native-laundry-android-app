@@ -65,7 +65,7 @@ export default class MachineHelper extends Component {
             textAlign: "center",
             color: "red"
           }}
-        > Power failure </Text>
+        > Connection failure </Text>
       );
     } else if (machine._status == "active") {
       return (
