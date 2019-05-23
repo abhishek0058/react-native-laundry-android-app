@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Laundry Bay",
+    "name": "Admin App",
     "description": "An IoT project for distributed Laundry System",
     "slug": "laundry-bay-app",
     "privacy": "public",
@@ -22,11 +22,11 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.abhi.laundrybay"
+      "bundleIdentifier": "com.admin.laundrybay"
     },
     "android": {
-      "package": "com.abhi.laundrybay",
-      "versionCode": 14,
+      "package": "com.admin.laundrybay",
+      "versionCode": 1,
       "permissions": []
     }
   }
