@@ -41,7 +41,7 @@ const HomeNavigator = createDrawerNavigator(
     Package: Package,
     Purchases: PurchaseHistory,
     Instructions: Instructions,
-    // Profile: Profile,
+    Profile: Profile,
     Faq: Faq,
     'Our Policies': RefundPolicy,
     'Contact us': ContactUs,
